@@ -7,22 +7,16 @@ function Glyph(template) {
   // If can have various characters, pick a random one
   if (this._symbol instanceof Array) this._symbol = this._symbol.random();
 
-  this._foreground = template['foreground'] || 'white';
+  this._color = template['color'] || 'white';
   // If the color can have some randomness, generate it. 
   // (eg. expects [[r, g, b], randomness])
-  if (this._foreground instanceof Array) {
-    this._foreground = ROT.Color.randomizeClamp(this._foreground[0], this._foreground[1]);
-  } else if (typeof this._foreground == 'string') {
-    this._foreground = ROT.Color.fromString(this._foreground);
-  }
-
-  this._background = template['background'] || 'black';
-   if (typeof this._background == 'string') {
-    this._background = ROT.Color.fromString(this._background);
+  if (this._color instanceof Array) {
+    this._color = ROT.Color.randomizeClamp(this._color[0], this._color[1]);
+  } else if (typeof this._color == 'string') {
+    this._color = ROT.Color.fromString(this._color);
   }
 };
 
 
 Glyph.prototype.getSymbol = function() { return this._symbol; };
-Glyph.prototype.getForeground = function() { return this._foreground; };
-Glyph.prototype.getBackground = function() { return this._background; };
+Glyph.prototype.getColor = function() { return this._color; };
