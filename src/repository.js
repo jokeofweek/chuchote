@@ -43,8 +43,14 @@ Repository.prototype.build = function(name, extra) {
     template = newTemplate;
   }
 
+  // If a custom constructor is specified, use that instead.
+  var ctor = this._ctor;
+  if (template['ctor']) {
+    ctor = template['ctor'];
+  }
+
   // Create the object
-  return new this._ctor(template);
+  return new ctor(template);
 };
 
 /**
