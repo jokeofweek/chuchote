@@ -10,7 +10,7 @@ function Glyph(template) {
   this._color = template['color'] || 'white';
   // If the color can have some randomness, generate it. 
   // (eg. expects [[r, g, b], randomness])
-  if (this._color instanceof Array) {
+  if (this._color instanceof Array && this._color[0] instanceof Array) {
     this._color = ROT.Color.randomizeClamp(this._color[0], this._color[1]);
   } else if (typeof this._color == 'string') {
     this._color = ROT.Color.fromString(this._color);

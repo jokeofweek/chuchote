@@ -3,8 +3,8 @@
  */
 function Level() {
   this._tiles = {};
-  this._tileIdCache = {};
-  this._ambientLight = [100, 100, 100];
+  this._tileId = {};
+  this._ambientLight = [255, 255, 255];
 
   // Create the lighting and fov object.
   this._setupFOV();
@@ -93,18 +93,29 @@ Level.prototype.draw = function() {
  * @return {string?} The key for the tile if it was found, else null.
  */
 Level.prototype.getTileKeyById = function(id) {
-  // If already cached, simply return it.
-  if (this._tileIdCache[id]) {
-    return this._tileIdCache[id];
-  }
-  // If not cache, find it and then cache it
-  for (var k in this._tiles) {
-    if (this._tiles[k].getId() === id) {
-      this._tileIdCache[id] = k;
-      return k;
+  return this._tileId[id];
+};
+
+/**
+ * Updates a tile at a given position.
+ * @param {int} x
+ * @param {int} y
+ * @param {Tile} tile
+ */
+Level.prototype.setTile = function(x, y, tile) {
+  var key = this.key(x, y);
+  // If there was a tile here before, we have some cleanup to do.
+  if (this._tiles[key]) {
+    var oldTile = this._tiles[key];
+    if (oldTile.getId()) {
+      delete this._tileId[oldTile.getId()];
     }
   }
-  return null;
+  // Update the tile
+  this._tiles[key] = tile;
+  if (tile.getId()) {
+    this._tileId[tile.getId()] = key;
+  }
 };
 
 /**
@@ -115,6 +126,15 @@ Level.prototype.getTileKeyById = function(id) {
  */
 Level.key = Level.prototype.key = function(x, y) {
   return x + ',' + y;
+};
+
+/**
+ * Converts a key into a position.
+ * @param  {string} k The key.
+ * @return {array} An array where x is at index 0 and y at index 1
+ */
+Level.unkey = Level.prototype.unkey = function(k) {
+  return k.split(',');
 };
 
 // A global cache of all levels.
