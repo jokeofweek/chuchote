@@ -3,9 +3,9 @@
  * @param {object} template The template describing the object.
  */
 function Glyph(template) {
-  this._char = template['foreground'] || '#';
+  this._symbol = template['symbol'] || '#';
   // If can have various characters, pick a random one
-  if (this._char instanceof Array) this._char = this._char.random();
+  if (this._symbol instanceof Array) this._symbol = this._symbol.random();
 
 	this._foreground = template['foreground'] || '';
   // If the color can have some randomness, generate it. 
@@ -18,6 +18,6 @@ function Glyph(template) {
 };
 
 
-Glyph.prototype.getChar = function() { return this._char; };
+Glyph.prototype.getSymbol = function() { return this._symbol; };
 Glyph.prototype.getForeground = function() { return this._foreground; };
 Glyph.prototype.getBackground = function() { return this._background; };
