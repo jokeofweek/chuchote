@@ -10,7 +10,7 @@ StartScreen.prototype._enter = function() {
   // Setup the animation timer.
   this._animationTimer = setInterval(this._animate.bind(this), 200);
   this._animationFrame = 0;
-  this._maxAnimationFrames = 10;
+  this._maxAnimationFrames = 14;
   this._animate();
 };
 
@@ -45,7 +45,7 @@ StartScreen.prototype._render = function() {
     interpolationFactor = (this._maxAnimationFrames - this._animationFrame) / (this._maxAnimationFrames / 2);
   }
   // Want a gradient from yellow to orange and back.
-  var textColor = ROT.Color.interpolate([255, 255, 0], [255, 130, 0], interpolationFactor);
+  var textColor = ROT.Color.interpolate([255, 255, 0], [255, 70, 0], interpolationFactor);
 
   // Render the title
   var title = "Chuchote";
