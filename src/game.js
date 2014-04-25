@@ -26,7 +26,9 @@ var Game = {
         this.sheriff = NameGenerator.generate([144, 238, 144]);
         // Enter the game screen
         new StartScreen().enter().then(function() {
-          new HelpScreen(true).enter();
+          new HelpScreen(true).enter().then(function() {
+            new GameScreen().enter();
+          })
         });
         break;
       
