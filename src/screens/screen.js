@@ -18,6 +18,8 @@ Screen.prototype.enter = function() {
   window.addEventListener("keydown", this);
   // Callback
   this._enter();
+  // Render the scree
+  this.render();
   return this._promise;
 };
 
@@ -44,3 +46,8 @@ Screen.prototype.exit = function() {
  */
 Screen.prototype.handleEvent = function(e) {
 };
+
+/**
+ * Renders the screen.
+ */
+Screen.prototype.render = function() {};

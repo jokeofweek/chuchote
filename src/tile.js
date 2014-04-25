@@ -6,3 +6,4 @@ function Tile(template) {
 Tile.extend(Glyph);
 
 Tile.prototype.getId = function() {return this._id;};
+Tile.prototype.setId = function(id) {this._id = id;};

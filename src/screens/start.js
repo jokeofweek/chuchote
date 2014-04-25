@@ -28,15 +28,15 @@ StartScreen.prototype._animate = function() {
   // Clear the screen
   Game.display.clear();
   // Render the screen
-  this._render();
+  this.render();
   // Go to next animation frame
   this._animationFrame = (this._animationFrame + 1) % this._maxAnimationFrames
 };
 
 /**
- * Renders to the screen.
+ * @override
  */
-StartScreen.prototype._render = function() {
+StartScreen.prototype.render = function() {
   // To determine how far along the animation we are, first see what half of the frames we're in.
   var interpolationFactor = 0;
   if (this._animationFrame < this._maxAnimationFrames / 2) {
@@ -60,7 +60,9 @@ StartScreen.prototype._render = function() {
   Game.display.drawText((Game.SCREEN_WIDTH / 2) - (prompt.length / 2), 15, '%c{green}' + prompt);
 };
 
+/**
+ * @override
+ */
 StartScreen.prototype.handleEvent = function(e) {
-  console.log(e);
   this._promise.fulfill();
 };

@@ -7,7 +7,18 @@ HelpScreen.extend(Screen);
 /**
  * @override
  */
-HelpScreen.prototype._enter = function() {
+HelpScreen.prototype.handleEvent = function(e) {
+  // Close the screen after hitting enter.
+  if (e.keyCode == 13) {
+    e.preventDefault();
+    this._promise.fulfill();
+  }
+};
+
+/**
+ * @override
+ */
+HelpScreen.prototype.render = function() {
   var y = 1;
   // Render the header
   if (this._first) {
@@ -33,13 +44,3 @@ HelpScreen.prototype._enter = function() {
   y += 2;
 };
 
-/**
- * @override
- */
-HelpScreen.prototype.handleEvent = function(e) {
-  // Close the screen after hitting enter.
-  if (e.keyCode == 13) {
-    e.preventDefault();
-    this._promise.fulfill();
-  }
-};
