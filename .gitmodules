@@ -1,3 +1,6 @@
 [submodule "lib/rotjs"]
 	path = lib/rotjs
 	url = git@github.com:ondras/rot.js.git
+[submodule "lib/promise"]
+	path = lib/promise
+	url = git@github.com:ondras/promise.git
