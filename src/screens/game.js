@@ -7,7 +7,7 @@ GameScreen.prototype._enter = function() {
   console.log("Enter Game.");
   for (var x = 0; x < Game.MAP_WIDTH; x++) {
     for (var y = 0; y < Game.MAP_HEIGHT; y++) {
-      var glyph = Glyphs.build('grass');
+      var glyph = Tiles.build('grass');
       Game.display.draw(x, y, glyph.getSymbol(), ROT.Color.toRGB(glyph.getForeground()), ROT.Color.toRGB(glyph.getBackground()));
     }
   }
