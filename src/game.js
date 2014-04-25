@@ -1,5 +1,5 @@
 var Game = {
-  MAP_WIDTH: 80,
+  MAP_WIDTH: 100,
   MAP_HEIGHT: 24,
   TEXT_HEIGHT: 3,
   currentLevel: null,
