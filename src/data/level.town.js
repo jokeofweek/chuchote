@@ -1,5 +1,9 @@
 Level.Town = function() {
   Level.call(this);
+
+  // Last color and frame
+  this._lastColor = null;
+  this._lastAnimationFrame = -1;
   //
 };
 Level.Town.extend(Level);
@@ -26,11 +30,16 @@ Level.Town.prototype.getAnimationFrames = function() { return 2; };
 Level.prototype._preDraw = function() {
   // Add a light at the torch position.
   var torchPosition = this.unkey(this.getTileKeyById('torch'));
-  this.addLight(torchPosition[0], torchPosition[1], ROT.Color.randomizeClamp([255, 200, 0], 30));
+  // Check if we need to generate a new color
+  if (Game.gameScreen.getAnimationFrame() != this._lastAnimationFrame) {
+    this._lastAnimationFrame = Game.gameScreen.getAnimationFrame();
+    this._lastColor = ROT.Color.randomizeRound([300, 200, 0], 50)
+  }
+  this.addLight(torchPosition[0], torchPosition[1], this._lastColor);
 };
 
 Level.prototype._postDraw = function() {
   // Remove a light at the torch position.
   var torchPosition = this.unkey(this.getTileKeyById('torch'));
-  this.addLight(torchPosition[0], torchPosition[1], ROT.Color.randomizeClamp([255, 200, 0], 30));
+  this.removeLight(torchPosition[0], torchPosition[1]);
 };

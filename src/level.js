@@ -6,10 +6,11 @@ function Level() {
   this._entities = {};
   this._tileId = {};
   this._ambientLight = [255, 255, 255];
+  this._hasFog = true;
 
   // Create the lighting and fov object.
   this._setupFOV();
-  this._lighting = new ROT.Lighting(function(x, y){ return 0.3; }, {passes:2, range: 12});
+  this._lighting = new ROT.Lighting(function(x, y){ return 0.3; }, {passes: 2, range: 8});
   this._lighting.setFOV(this._fov);
 
   // Animation
@@ -92,36 +93,46 @@ Level.prototype.exit = function() {};
 Level.prototype.draw = function() {
   this._preDraw();
 
+  // Add the light at the player
+  this.addLight(Game.player.getX(), Game.player.getY(), [100, 100, 100]);
+
   // Calculate the lighting
   var lightData = {};
   var lightingCallback = function(x, y, color) {
-      lightData[Level.key(x, y)] = color;
-  }
+      lightData[this.key(x, y)] = color;
+  }.bind(this);
   this._lighting.compute(lightingCallback);
 
   // Render the tiles.
   for (var x = 0; x < Game.MAP_WIDTH; x++) {
     for (var y = 0; y < Game.MAP_HEIGHT; y++) {
       var key = this.key(x, y);
-      var obj = this._tiles[key];
+      var obj = this._entities[key] || this._tiles[key];
 
-      // If an entity is present, use that instead
-      if (this._entities[key]) {
-        obj = this._entities[key];
-      }
+      var baseColor = obj.getColor();
 
-      // Start with ambient lighting
-      var light = this._ambientLight;
       // If we have a calculated light, modify it.
-      if (key in lightData) {
-        light = ROT.Color.add(light, lightData[key]);
+      if (key in lightData && Math.max.apply(null, lightData[key]) > 0) {
+        // Add the ambient lighting to the light data
+        var light = ROT.Color.add(this._ambientLight, lightData[key]);
+        baseColor = ROT.Color.multiply(obj.getColor(), light);
+      } else if (this._hasFog) {
+        // Since it is just a being, only draw the tile
+        obj = this._tiles[key];
+        // First apply the ambient lighting
+        baseColor = ROT.Color.multiply(baseColor, this._ambientLight);
+        // If not in a light, we want to make the tile be foggy. We convert 
+        // all fog tiles to grayscale.
+        var newColor = Math.round((0.299 * baseColor[0]) + (0.587 * baseColor[1]) + (0.114 * baseColor[2]));
+        baseColor = [newColor, newColor, newColor];
       }
 
-      // If an entity is
-      // Draw the tile
-      Game.display.draw(x, y, obj.getSymbol(), ROT.Color.toRGB(ROT.Color.multiply(obj.getColor(), light)));
+      Game.display.draw(x, y, obj.getSymbol(), ROT.Color.toRGB(baseColor));
     }
   }
+
+  // Remove the player light
+  this.removeLight(Game.player.getX(), Game.player.getY());
 
   this._postDraw();
 };
