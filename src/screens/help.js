@@ -16,7 +16,9 @@ HelpScreen.prototype._enter = function() {
         'the %c{#fff}town sheriff%c{} %s.', Game.victim, Game.sheriff);
     y += Game.display.drawText(1, y, message, Game.SCREEN_WIDTH - 2) + 1;
   } else {
-    // TODO
+    var message = 'Help';
+    Game.display.drawText(Game.SCREEN_WIDTH / 2 - message.length / 2, y, '%c{#fff}' + message);
+    y += 2;
   }
 
   Game.display.drawText(1, y, '- To move your character, use %c{#fff}arrow keys%c{} or the %c{#fff}numpad%c{}.')
