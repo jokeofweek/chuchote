@@ -1,5 +1,8 @@
 var Game = {
-  SCREEN_WIDTH: 80,
+  MAP_WIDTH: 80,
+  MAP_HEIGHT: 24,
+  TEXT_HEIGHT: 3,
+
   init: function() {
     window.addEventListener('load', this);
   },
@@ -9,9 +12,11 @@ var Game = {
         // Load only happens once.
         window.removeEventListener('load', this);
         // Initial page load - create the display and start the introduction.
+        this.SCREEN_WIDTH = this.MAP_WIDTH;
+        this.SCREEN_HEIGHT = this.MAP_HEIGHT + this.TEXT_HEIGHT;
         this.display = new ROT.Display({
           width: this.SCREEN_WIDTH,
-          height: 24,
+          height: this.SCREEN_HEIGHT,
           fontFamily: "droid sans mono, monospace",
           spacing: 1.1,
           fg: "#aaa"
