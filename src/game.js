@@ -20,8 +20,10 @@ var Game = {
         window.addEventListener('resize', this);
         // Initial resize
         this.resize();
-        // Render hello world.
-        this.display.drawText(5, 5, 'Hello, world!');
+        // Enter the game screen
+        new StartScreen().enter().then(function() {
+          new GameScreen().enter();
+        });
         break;
       
       case 'resize':
