@@ -73,6 +73,7 @@ var Game = {
     this.currentLevel = level;
     this.currentLevel.enter();
     // Refresh the game screen
+    this.gameScreen.changeLevel();
     this.gameScreen.render();
   }
 };

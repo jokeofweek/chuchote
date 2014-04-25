@@ -11,8 +11,23 @@ function Level() {
   this._lighting = new ROT.Lighting(function(x, y){ return 0.3; }, {passes:2, range: 12});
   this._lighting.setFOV(this._fov);
 
+  // Animation
+  this._animationFrame = 0;
+
   this._setupTiles();
 };
+
+/**
+ * Whether the level requires animation.
+ * @return {Boolean}
+ */
+Level.prototype.isAnimated = function() {  return false; };
+
+/**
+ * The number of frames per second that this should be animated.
+ * @return {int}
+ */
+Level.prototype.getAnimationFrames = function() { return 0; };
 
 /**
  * A function to be overridden where the map is loaded.
@@ -61,13 +76,14 @@ Level.prototype.exit = function() {};
  * Draws a level.
  */
 Level.prototype.draw = function() {
+  this._preDraw();
+
   // Calculate the lighting
-  var lightData = {};  
+  var lightData = {};
   var lightingCallback = function(x, y, color) {
       lightData[Level.key(x, y)] = color;
   }
   this._lighting.compute(lightingCallback);
-  console.log(lightData);
 
   // Render the tiles.
   for (var x = 0; x < Game.MAP_WIDTH; x++) {
@@ -85,7 +101,21 @@ Level.prototype.draw = function() {
       Game.display.draw(x, y, tile.getSymbol(), ROT.Color.toRGB(ROT.Color.multiply(tile.getColor(), light)));
     }
   }
+
+  this._postDraw();
 };
+
+/**
+ * A hook which is called before drawing begins.
+ * @protected
+ */
+Level.prototype._preDraw = function() {};
+
+/**
+ * A hook which is called after drawing ends.
+ * @protected
+ */
+Level.prototype._postDraw = function() {};
 
 /**
  * Finds the key of a tile on the level with a given id.
