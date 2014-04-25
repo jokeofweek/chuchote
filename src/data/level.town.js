@@ -9,4 +9,6 @@ Level.Town.prototype._setupTiles = function() {
       this._tiles[this.key(x, y)] = Tiles.build('grass');
     }
   }
+  // Add a light in the center
+  this.addLight(Game.MAP_WIDTH / 2, Game.MAP_HEIGHT / 2, [400, 0, 0]);
 };
