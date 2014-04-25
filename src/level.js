@@ -3,6 +3,7 @@
  */
 function Level() {
   this._tiles = {};
+  this._entities = {};
   this._tileId = {};
   this._ambientLight = [255, 255, 255];
 
@@ -63,6 +64,19 @@ Level.prototype.removeLight = function(x, y) {
 };
 
 /**
+ * Updates the entity at a given position.
+ * @param {int} x      
+ * @param {int} y      
+ * @param {Entity?} entity The entity at this position, or null if none.
+ */
+Level.prototype.setEntity = function(x, y, entity) {
+  if (!entity && this._entities[this.key(x, y)]) {
+    this._entities[this.key(x, y)] = null;
+  }
+  this._entities[this.key(x, y)] = entity;
+};
+
+/**
  * Called when the player enters the level.
  */
 Level.prototype.enter = function() {};
@@ -89,7 +103,12 @@ Level.prototype.draw = function() {
   for (var x = 0; x < Game.MAP_WIDTH; x++) {
     for (var y = 0; y < Game.MAP_HEIGHT; y++) {
       var key = this.key(x, y);
-      var tile = this._tiles[key];
+      var obj = this._tiles[key];
+
+      // If an entity is present, use that instead
+      if (this._entities[key]) {
+        obj = this._entities[key];
+      }
 
       // Start with ambient lighting
       var light = this._ambientLight;
@@ -97,8 +116,10 @@ Level.prototype.draw = function() {
       if (key in lightData) {
         light = ROT.Color.add(light, lightData[key]);
       }
+
+      // If an entity is
       // Draw the tile
-      Game.display.draw(x, y, tile.getSymbol(), ROT.Color.toRGB(ROT.Color.multiply(tile.getColor(), light)));
+      Game.display.draw(x, y, obj.getSymbol(), ROT.Color.toRGB(ROT.Color.multiply(obj.getColor(), light)));
     }
   }
 
