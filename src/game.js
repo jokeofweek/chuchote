@@ -39,8 +39,12 @@ var Game = {
             Game.gameScreen = new GameScreen();
             Game.gameScreen.enter();
             // Set up the level
-            Levels.town = new Level.Town();
-            Game.switchLevel(Levels.town);
+            Levels.town = new Level.Town()
+            // Set up the player
+            Game.player = Entities.build('human', {name: 'player', ctor: Entity.Player});
+            Game.player.setPosition(5, 5, Levels.town);
+            // Switch the game level.
+            Game.switchLevel(Levels.town);            
           // Add this error handler to avoid swallowing errors.
           }).then(null, function(e) { console.log(e.stack); })
         });
