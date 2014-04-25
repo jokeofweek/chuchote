@@ -29,4 +29,6 @@ HelpScreen.prototype._enter = function() {
   y += 2;
   Game.display.drawText(1, y, "- To view the list of facts you've discovered, %c{#fff}press f%c{}.")
   y += 2;
+  Game.display.drawText(1, y, "- To view this screen again, %c{#fff}press ?%c{}.")
+  y += 2;
 };
