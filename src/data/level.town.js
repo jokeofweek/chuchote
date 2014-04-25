@@ -11,8 +11,18 @@ Level.Town.extend(Level);
 Level.Town.prototype._setupTiles = function() {
   for (var x = 0; x < Game.MAP_WIDTH; x++) {
     for (var y = 0; y < Game.MAP_HEIGHT; y++) {
-      this.setTile(x, y, Tiles.build('grass'));
+      // Stone wall on the outer edge
+      if (x == 0 || y == 0 || x == Game.MAP_WIDTH - 1 || y == Game.MAP_HEIGHT - 1) {
+        this.setTile(x, y, Tiles.build('stone-wall'));
+      } else {
+        this.setTile(x, y, Tiles.build('grass'));
+      }
     }
+  }
+
+  // Gate at the bottom 4 center tiles
+  for (x = 0; x < 4; x++) {
+    this.setTile((Game.MAP_WIDTH / 2) - 2 + x, Game.MAP_HEIGHT - 1, Tiles.build('wooden-gate'));
   }
 
   // Place a torch at the center
