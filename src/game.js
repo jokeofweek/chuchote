@@ -5,6 +5,8 @@ var Game = {
   currentLevel: null,
   victim: null,
   sheriff: null,
+  engine: null,
+  scheduler: null,
   gameScreen: null,
   init: function() {
     window.addEventListener('load', this);
@@ -38,13 +40,17 @@ var Game = {
             // Switch to game screen
             Game.gameScreen = new GameScreen();
             Game.gameScreen.enter();
+            // Set up the scheduler and the engine
+            Game.scheduler = new ROT.Scheduler.Speed();
+            Game.engine = new ROT.Engine(Game.scheduler);  
             // Set up the level
             Levels.town = new Level.Town()
             // Set up the player
             Game.player = Entities.build('human', {name: 'player', ctor: Entity.Player});
             Game.player.setPosition(5, 5, Levels.town);
             // Switch the game level.
-            Game.switchLevel(Levels.town);            
+            Game.switchLevel(Levels.town);          
+            Game.engine.start();
           // Add this error handler to avoid swallowing errors.
           }).then(null, function(e) { console.log(e.stack); })
         });

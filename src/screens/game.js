@@ -82,6 +82,22 @@ GameScreen.prototype._enterAndRender = function() {
  * @override
  */
 GameScreen.prototype.handleEvent = function(e) {
+  // Ignore modified keys.
+  if (e.ctrlKey || e.altKey) { return; }
+  if (e.keyCode == ROT.VK_SHIFT) { return; }
+
+  // Check if a directional key was pressed.
+  if (e.keyCode in KEYS) {
+    // Get corresponding direction
+    var direction = KEYS[e.keyCode];
+    // Get offsets
+    var offsets = ROT.DIRS[8][direction];
+    var newX = Game.player.getX() + offsets[0];
+    var newY = Game.player.getY() + offsets[1];
+    Game.player.setPosition(newX, newY, Game.player.getLevel());
+    Game.player.getMovePromise().fulfill();
+  }
+
   switch (e.keyCode) {
     case ROT.VK_QUESTION_MARK: 
     case ROT.VK_SLASH: 

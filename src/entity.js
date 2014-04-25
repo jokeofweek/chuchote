@@ -15,6 +15,14 @@ Entity.extend(Glyph);
 Entity.prototype.act = function() {};
 
 /**
+ * Function required by the engine.
+ * @return {int} the speed of the entity.
+ */
+Entity.prototype.getSpeed = function() {
+  return 100;
+};
+
+/**
  * Moves an entity to a different position.
  * @param {int} x The new x position.
  * @param {int} y The new y position.
@@ -24,6 +32,9 @@ Entity.prototype.setPosition = function(x, y, level) {
   // Remove the entity from the old position.
   if (this._level) {
     this._level.setEntity(this._x, this._y, null);
+  } else {
+    // No level before, so add them to the scheduler
+    Game.scheduler.add(this, true);
   }
   this._level = level;
   this._x = x;
@@ -31,4 +42,19 @@ Entity.prototype.setPosition = function(x, y, level) {
   this._level.setEntity(this._x, this._y, this);
 };
 
+/**
+ * Kills an entity.
+ */
+Entity.prototype.die = function() {
+  // Remove them from the old level
+  if (this._level) {
+    this._level.setEntity(this._x, this._y, null);
+    this._level = null;
+    Game.scheduler.remove(this);
+  }
+};
+
 Entity.prototype.getName = function() { return this._name; };
+Entity.prototype.getX = function() { return this._x; };
+Entity.prototype.getY = function() { return this._y; };
+Entity.prototype.getLevel = function() { return this._level; };
