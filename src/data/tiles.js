@@ -12,11 +12,13 @@ Tiles.add('fire', {
 
 Tiles.add('stone-wall', {
   'symbol': '#',
-  'color': [170, 170, 190]
+  'color': [170, 170, 190],
+  'blockMovement': true
 });
 
 
 Tiles.add('wooden-gate', {
   'symbol': '-',
-  'color': [205, 133, 63]
+  'color': [205, 133, 63],
+  'blockMovement': true
 });

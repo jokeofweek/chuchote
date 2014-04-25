@@ -94,7 +94,11 @@ GameScreen.prototype.handleEvent = function(e) {
     var offsets = ROT.DIRS[8][direction];
     var newX = Game.player.getX() + offsets[0];
     var newY = Game.player.getY() + offsets[1];
-    Game.player.setPosition(newX, newY, Game.player.getLevel());
+
+    // Only move if the tile doesn't block movement
+    if (!Game.player.getLevel().getTile(newX, newY).blocksMovement()) {
+      Game.player.setPosition(newX, newY, Game.player.getLevel());
+    }
     Game.player.getMovePromise().fulfill();
   }
 

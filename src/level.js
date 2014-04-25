@@ -78,6 +78,16 @@ Level.prototype.setEntity = function(x, y, entity) {
 };
 
 /**
+ * Fetches a tile from the level.
+ * @param  {int} x 
+ * @param  {int} y 
+ * @return {Tile?}   The tile at the position if it is within bounds.
+ */
+Level.prototype.getTile = function(x, y) {
+  return this._tiles[this.key(x, y)];
+};
+
+/**
  * Called when the player enters the level.
  */
 Level.prototype.enter = function() {};
