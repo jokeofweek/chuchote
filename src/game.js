@@ -22,10 +22,11 @@ var Game = {
         // Initial resize
         this.resize();
         // Instantiate the victim's information
-        this.victim = NameGenerator.generate();
+        this.victim = NameGenerator.generate([255, 0, 0]);
+        this.sheriff = NameGenerator.generate([144, 238, 144]);
         // Enter the game screen
         new StartScreen().enter().then(function() {
-          new GameScreen().enter();
+          new HelpScreen(true).enter();
         });
         break;
       
@@ -45,4 +46,4 @@ var Game = {
     node.style.left = Math.round((w-node.offsetWidth)/2) + "px";
     node.style.top = Math.round((h-node.offsetHeight)/2) + "px";
   }
-}
+};

@@ -32,7 +32,6 @@ Screen.prototype._enter = function() {};
 Screen.prototype._exit = function() {};
 
 Screen.prototype.exit = function() {
-  console.log('exiting');
   // Remove the key handler
   window.removeEventListener('keydown', this);
   // Callback
