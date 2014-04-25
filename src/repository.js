@@ -20,14 +20,31 @@ Repository.prototype.add = function(name, template) {
 /**
  * Builds a new object based on a given template.
  * @param  {string} name The name of the template to use.
+ * @param {object?} extra An optional template to add to the original template before building.
  * @return {object} The built object.
  */
-Repository.prototype.build = function(name) {
+Repository.prototype.build = function(name, extra) {
   if (!this._templates[name]) {
     throw new Error('No such template: ' + name);
   }
+
+  var template = this._templates[name];
+
+  if (extra) {
+    // First create a copy of the template
+    var newTemplate = {};
+    for (var k in template) {
+      newTemplate[k] = template[k];
+    }
+    // Add every extra property to the template
+    for (var k in extra) {
+      newTemplate[k] = extra[k];
+    }
+    template = newTemplate;
+  }
+
   // Create the object
-  return new this._ctor(this._templates[name]);
+  return new this._ctor(template);
 };
 
 /**
