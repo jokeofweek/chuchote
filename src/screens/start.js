@@ -10,7 +10,7 @@ StartScreen.prototype._enter = function() {
   // Setup the animation timer.
   this._animationTimer = setInterval(this._animate.bind(this), 200);
   this._animationFrame = 0;
-  this._maxAnimationFrames = 20;
+  this._maxAnimationFrames = 10;
   this._animate();
 };
 
@@ -44,11 +44,20 @@ StartScreen.prototype._render = function() {
   } else {
     interpolationFactor = (this._maxAnimationFrames - this._animationFrame) / (this._maxAnimationFrames / 2);
   }
-  console.log(interpolationFactor);
+  // Want a gradient from yellow to orange and back.
   var textColor = ROT.Color.interpolate([255, 255, 0], [255, 130, 0], interpolationFactor);
 
-  var title = "Game title";
+  // Render the title
+  var title = "Chuchote";
   Game.display.drawText(Game.SCREEN_WIDTH / 2 - Math.floor(title.length / 2), 5, "%c{rgb(" + textColor.join(',') + ")}" + title);
+
+  // Render the plotline
+  var plotLine = "You just found your friend " + Game.victim.name + " dead on the ground. Will you be able to find out who did it?";
+  Game.display.drawText(Game.SCREEN_WIDTH / 2 - 20, 7, plotLine, 40);
+
+  // Render the any key prompt
+  var prompt = "<Press any key to get started>";
+  Game.display.drawText((Game.SCREEN_WIDTH / 2) - (prompt.length / 2), 15, '%c{green}' + prompt);
 };
 
 StartScreen.prototype.handleEvent = function(e) {

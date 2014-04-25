@@ -21,6 +21,8 @@ var Game = {
         window.addEventListener('resize', this);
         // Initial resize
         this.resize();
+        // Instantiate the victim's information
+        this.victim = NameGenerator.generate();
         // Enter the game screen
         new StartScreen().enter().then(function() {
           new GameScreen().enter();
