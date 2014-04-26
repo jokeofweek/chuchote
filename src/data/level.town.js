@@ -27,7 +27,17 @@ Level.Town.prototype._setupTiles = function() {
   this._placeTorches();
 
   // Temporary building
-  this._carveRectangle(5, 5, 5, 3, 'out-of-bounds', 'stone-wall');
+  var lotsWidth = 44;
+  var totalLots = 4;
+  var lotWidth = lotsWidth / totalLots;
+  var lotHeight = 6;
+
+  for (var i = 0; i < totalLots; i++) {
+    this._generateBuilding(4 + (i * lotWidth), 4, lotWidth, lotHeight);
+    this._generateBuilding(Game.MAP_WIDTH / 2 + 1 + (i * lotWidth), 4, lotWidth, lotHeight);
+    this._generateBuilding(4 + (i * lotWidth), Game.MAP_HEIGHT / 2 + 1, lotWidth, lotHeight);
+    this._generateBuilding(Game.MAP_WIDTH / 2 + 1 + (i * lotWidth), Game.MAP_HEIGHT / 2 + 1, lotWidth, lotHeight);
+  }
 };
 
 Level.Town.prototype._carveRectangle = function(left, top, width, height, innerTile, outerTile) {
@@ -38,6 +48,39 @@ Level.Town.prototype._carveRectangle = function(left, top, width, height, innerT
       } else {
         this.setTile(x, y, Tiles.build(innerTile));
       }
+    }
+  }
+};
+
+Level.Town.prototype._generateBuilding = function(left, top, lotWidth, lotHeight) {
+  // Generate a random width and height
+  var buildingWidth = ROT.RNG.getUniformInt(Math.round(lotWidth * 0.6), lotWidth - 2);
+  var buildingHeight = ROT.RNG.getUniformInt(Math.round(lotHeight * 0.6), lotHeight - 2);
+  var leftOffset = ROT.RNG.getUniformInt(1, lotWidth - buildingWidth);
+  var topOffset = ROT.RNG.getUniformInt(1, lotHeight - buildingHeight);
+  this._carveRectangle(left + leftOffset, top + topOffset, buildingWidth, buildingHeight, 'out-of-bounds', 'stone-wall');
+  
+  var bottomWallY =  top + topOffset + buildingHeight - 1;
+
+  // Randomly place windows
+  var windows = ROT.RNG.getUniformInt(1, Math.round(buildingWidth * 0.5));
+  for (var i = 0; i < windows; i++) {
+    // We don't want a window on the corner
+    var windowX = ROT.RNG.getUniformInt(0, buildingWidth - 3);
+    this.setTile(left + leftOffset + windowX + 1, bottomWallY, Tiles.build('window'));
+  }
+
+  // Place the door randomly
+  var doorX = ROT.RNG.getUniformInt(0, buildingWidth - 3);
+  this.setTile(left + leftOffset + doorX + 1, bottomWallY, Tiles.build('door'));
+  // Carve path down from door
+  var pathX = left + leftOffset + doorX + 1;
+  for (var y = bottomWallY + 1; y < top + topOffset + lotHeight; y++) {
+    this.setTile(pathX, y, Tiles.build('road'));
+    // Chance of perturbing the path
+    if (ROT.RNG.getUniform() < 0.2) {
+      pathX += (ROT.RNG.getUniformInt(1, 2) == 1 ? -1 : 1);
+      this.setTile(pathX, y, Tiles.build('road'));
     }
   }
 };

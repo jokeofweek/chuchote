@@ -41,3 +41,13 @@ Tiles.add('road', {
   'symbol': '░',
   'color': [150, 150, 150]
 });
+
+Tiles.add('window', {
+  'symbol': '#',
+  'color': '#0099CC'
+});
+
+Tiles.add('door', {
+  'symbol': '+',
+  'color': [205, 133, 63]
+});
