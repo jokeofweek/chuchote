@@ -16,9 +16,13 @@ Tiles.add('stone-wall', {
   'blockMovement': true
 });
 
-
 Tiles.add('wooden-gate', {
   'symbol': '-',
   'color': [205, 133, 63],
   'blockMovement': true
+});
+
+Tiles.add('road', {
+  'symbol': '░',
+  'color': [150, 150, 150]
 });

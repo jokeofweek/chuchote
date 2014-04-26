@@ -25,6 +25,27 @@ Level.Town.prototype._setupTiles = function() {
     this.setTile((Game.MAP_WIDTH / 2) - 2 + x, Game.MAP_HEIGHT - 1, Tiles.build('wooden-gate'));
   }
 
+  // Road around town
+  for (var x = 2; x < Game.MAP_WIDTH - 2; x++) {
+    this.setTile(x, 2, Tiles.build('road'));
+    this.setTile(x, 3, Tiles.build('road'));
+    this.setTile(x, Game.MAP_HEIGHT / 2, Tiles.build('road'));
+    this.setTile(x, -1 + Game.MAP_HEIGHT / 2, Tiles.build('road'));
+    this.setTile(x, Game.MAP_HEIGHT - 3, Tiles.build('road'));
+    this.setTile(x, Game.MAP_HEIGHT - 4, Tiles.build('road'));
+  }
+  for (var y = 4; y < Game.MAP_HEIGHT - 4; y++) {
+    this.setTile(2, y, Tiles.build('road'));
+    this.setTile(3, y, Tiles.build('road'));
+    this.setTile(Game.MAP_WIDTH / 2, y, Tiles.build('road'));
+    this.setTile(-1 + Game.MAP_WIDTH / 2, y, Tiles.build('road'));
+    this.setTile(Game.MAP_WIDTH - 3, y, Tiles.build('road'));
+    this.setTile(Game.MAP_WIDTH - 4, y, Tiles.build('road'));
+  }
+
+  this.setTile(Game.MAP_WIDTH / 2, Game.MAP_HEIGHT - 2, Tiles.build('road'));
+  this.setTile(-1 + Game.MAP_WIDTH / 2, Game.MAP_HEIGHT - 2, Tiles.build('road'));
+
   // Place a torch at the center
   this.setTile(Game.MAP_WIDTH / 2, Game.MAP_HEIGHT / 2, Tiles.build('fire', {id: 'torch'}));
 
