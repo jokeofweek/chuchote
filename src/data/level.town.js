@@ -1,10 +1,5 @@
 Level.Town = function() {
   Level.call(this);
-
-  // Last color and frame
-  this._lastColor = null;
-  this._lastAnimationFrame = -1;
-  //
 };
 Level.Town.extend(Level);
 
@@ -46,31 +41,18 @@ Level.Town.prototype._setupTiles = function() {
   this.setTile(Game.MAP_WIDTH / 2, Game.MAP_HEIGHT - 2, Tiles.build('road'));
   this.setTile(-1 + Game.MAP_WIDTH / 2, Game.MAP_HEIGHT - 2, Tiles.build('road'));
 
-  // Place a torch at the center
-  this.setTile(Game.MAP_WIDTH / 2, Game.MAP_HEIGHT / 2, Tiles.build('fire', {id: 'torch'}));
+  // Place torches
+  this.setTile(1, 1, Tiles.build('torch'));
+  this.setTile(Game.MAP_WIDTH - 2, 1, Tiles.build('torch'));
+  this.setTile(1, Game.MAP_HEIGHT - 2, Tiles.build('torch'));
+  this.setTile(Game.MAP_WIDTH - 2, Game.MAP_HEIGHT - 2, Tiles.build('torch'));
+  this.setTile(Game.MAP_WIDTH / 2 - 2, Game.MAP_HEIGHT / 2 - 2, Tiles.build('torch'));
+  this.setTile(Game.MAP_WIDTH / 2 + 1, Game.MAP_HEIGHT / 2 - 2, Tiles.build('torch'));
+  this.setTile(Game.MAP_WIDTH / 2 - 2, Game.MAP_HEIGHT / 2 + 1, Tiles.build('torch'));
+  this.setTile(Game.MAP_WIDTH / 2 + 1, Game.MAP_HEIGHT / 2 + 1, Tiles.build('torch'));
+  this.setTile(Game.MAP_WIDTH / 2 + 1, Game.MAP_HEIGHT - 2, Tiles.build('torch'));
+  this.setTile(-2 + Game.MAP_WIDTH / 2, Game.MAP_HEIGHT - 2, Tiles.build('torch'));
 
   // Setup lighting
   this._ambientLighting = [130, 130, 130];
-};
-
-
-Level.Town.prototype.isAnimated = function() {  return true; };
-Level.Town.prototype.getAnimationFrames = function() { return 2; };
-
-
-Level.prototype._preDraw = function() {
-  // Add a light at the torch position.
-  var torchPosition = this.unkey(this.getTileKeyById('torch'));
-  // Check if we need to generate a new color
-  if (Game.gameScreen.getAnimationFrame() != this._lastAnimationFrame) {
-    this._lastAnimationFrame = Game.gameScreen.getAnimationFrame();
-    this._lastColor = ROT.Color.randomizeRound([300, 200, 0], 50)
-  }
-  this.addLight(torchPosition[0], torchPosition[1], this._lastColor);
-};
-
-Level.prototype._postDraw = function() {
-  // Remove a light at the torch position.
-  var torchPosition = this.unkey(this.getTileKeyById('torch'));
-  this.removeLight(torchPosition[0], torchPosition[1]);
 };

@@ -8,7 +8,7 @@ GameScreen.extend(Screen);
 GameScreen.prototype._enter = function() {
   // If we have a level, start animating
   if (Game.currentLevel) {
-    this._startAnimationTimer(Game.currentLevel);
+    this._startAnimationTimer();
   }
 };
 
@@ -32,17 +32,17 @@ GameScreen.prototype._stopAnimationTimer = function() {
  * @param  {Level} level
  */
 GameScreen.prototype._startAnimationTimer = function(level) {
-  // Test if we need to animate again
-  this._animationFrame = 0;    
-  if (level.isAnimated()) {
-    var totalFrames = level.getAnimationFrames();
+  var totalFrames = 2;
+  this._animationFrame = 0;   
 
-    this._animationTimer = setInterval(function() {
-      this._animationFrame = (this._animationFrame + 1) % totalFrames;
+  this._animationTimer = setInterval(function() {
+    this._animationFrame = (this._animationFrame + 1) % totalFrames;
+    if (Game.currentLevel.isAnimated()) {
       Game.display.clear();
       this.render();
-    }.bind(this), Math.round(1000 / level.getAnimationFrames()));
-  }
+    }
+  }.bind(this), Math.round(1000 / totalFrames));
+
 };
 
 /**

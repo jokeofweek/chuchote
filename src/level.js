@@ -12,9 +12,10 @@ function Level() {
   this._setupFOV();
   this._lighting = new ROT.Lighting(function(x, y){ return 0.3; }, {passes: 2, range: 8});
   this._lighting.setFOV(this._fov);
-
-  // Animation
-  this._animationFrame = 0;
+  this._lights = {};
+  this._lastFrame = -1;
+  this._lastColors = {};
+  this._isAnimated = false;
 
   this._setupTiles();
 };
@@ -23,13 +24,7 @@ function Level() {
  * Whether the level requires animation.
  * @return {Boolean}
  */
-Level.prototype.isAnimated = function() {  return false; };
-
-/**
- * The number of frames per second that this should be animated.
- * @return {int}
- */
-Level.prototype.getAnimationFrames = function() { return 0; };
+Level.prototype.isAnimated = function() {  return this._isAnimated; };
 
 /**
  * A function to be overridden where the map is loaded.
@@ -103,6 +98,7 @@ Level.prototype.exit = function() {};
 Level.prototype.draw = function() {
   this._preDraw();
 
+  this._addDynamicLights();
   // Add the light at the player
   this.addLight(Game.player.getX(), Game.player.getY(), [100, 100, 100]);
 
@@ -143,7 +139,7 @@ Level.prototype.draw = function() {
 
   // Remove the player light
   this.removeLight(Game.player.getX(), Game.player.getY());
-
+  this._removeDynamicLights();
   this._postDraw();
 };
 
@@ -182,11 +178,36 @@ Level.prototype.setTile = function(x, y, tile) {
     if (oldTile.getId()) {
       delete this._tileId[oldTile.getId()];
     }
+    // If there was a light for this key, remove it
+    if (oldTile.getLight()) {
+      // If it's a static light, not much work to do, else we 
+      // have to remove it to prevent it from animating
+      if (oldTile.isDynamicLight()) { 
+        delete this._lights[key];
+        delete this._lastColors[key];
+        // If no lights left, don't need animation
+        if (Object.keys(this._lights).length == 0) {
+          this._isAnimated = false;
+        }
+      } else {
+        this._lighting.setLight(x, y, null);
+      }
+    }
   }
   // Update the tile
   this._tiles[key] = tile;
   if (tile.getId()) {
     this._tileId[tile.getId()] = key;
+  }
+  if (tile.getLight()) {
+    // If it's dynamic, register it to the animated lights, else
+    // just add the light manually
+    if (tile.isDynamicLight()) {
+      this._lights[key] = tile.getLight();
+      this._isAnimated = true;
+    } else {
+      this._lighting.setLight(x, y, tile.getLight());
+    }
   }
 };
 
@@ -207,6 +228,30 @@ Level.key = Level.prototype.key = function(x, y) {
  */
 Level.unkey = Level.prototype.unkey = function(k) {
   return k.split(',');
+};
+
+
+Level.prototype._addDynamicLights = function() {
+  // If we are on a new animation frame, regenerate the light colors
+  if (Game.gameScreen.getAnimationFrame() != this._lastAnimationFrame) {
+    this._lastAnimationFrame = Game.gameScreen.getAnimationFrame();
+    // Create all new dynamic lights
+    for (var k in this._lights) {
+      this._lastColors[k] = ROT.Color.randomizeRound.apply(null, this._lights[k]);
+    }
+  }
+  // Actually add the lights
+  for (var k in this._lights) {
+    var position = this.unkey(k);
+    this.addLight(position[0], position[1], this._lastColors[k]);
+  }
+};
+
+Level.prototype._removeDynamicLights = function() {
+  for (var k in this._lights) {
+    var position = this.unkey(k);
+    this.addLight(position[0], position[1], null);
+  }
 };
 
 // A global cache of all levels.

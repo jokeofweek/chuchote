@@ -5,9 +5,11 @@ Tiles.add('grass', {
   'color': [[34, 139, 34], 15]
 });
 
-Tiles.add('fire', {
-  'symbol': 'X',
-  'color': [255, 153, 0]
+Tiles.add('torch', {
+  'symbol': 'φ',
+  'color': [255, 153, 0],
+  'light': [[300, 200, 0], 50],
+  'blockMovement': true
 });
 
 Tiles.add('stone-wall', {
