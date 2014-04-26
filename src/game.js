@@ -35,24 +35,24 @@ var Game = {
         this.victim = NameGenerator.generate([255, 0, 0]);
         this.sheriff = NameGenerator.generate([144, 238, 144]);
         // Enter the start screen
-        new StartScreen().enter().then(function() {
-          new HelpScreen(true).enter().then(function() {
-            // Switch to game screen
-            Game.gameScreen = new GameScreen();
-            Game.gameScreen.enter();
-            // Set up the scheduler and the engine
-            Game.scheduler = new ROT.Scheduler.Speed();
-            Game.engine = new ROT.Engine(Game.scheduler);  
-            // Set up the level
-            Levels.town = new Level.Town()
-            // Set up the player
-            Game.player = Entities.build('human', {name: 'player', ctor: Entity.Player});
-            Game.player.setPosition(5, 5, Levels.town);
-            // Switch the game level.
-            Game.switchLevel(Levels.town);          
-            Game.engine.start();
-          // Add this error handler to avoid swallowing errors.
-          }).then(null, function(e) { console.log(e.stack); })
+        new LoadingScreen().enter().then(function() {
+          new StartScreen().enter().then(function() {
+            new HelpScreen(true).enter().then(function() {
+              // Switch to game screen
+              Game.gameScreen = new GameScreen();
+              Game.gameScreen.enter();
+              // Set up the scheduler and the engine
+              Game.scheduler = new ROT.Scheduler.Speed();
+              Game.engine = new ROT.Engine(Game.scheduler);  
+              // Set up the player
+              Game.player = Entities.build('human', {name: 'player', ctor: Entity.Player});
+              Game.player.setPosition(5, 5, Levels.town);
+              // Switch the game level.
+              Game.switchLevel(Levels.town);          
+              Game.engine.start();
+            // Add this error handler to avoid swallowing errors.
+            }).then(null, function(e) { console.log(e.stack); })
+          });
         });
         break;
       

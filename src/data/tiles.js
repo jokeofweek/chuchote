@@ -48,6 +48,6 @@ Tiles.add('window', {
 });
 
 Tiles.add('door', {
-  'symbol': '+',
+  'symbol': '⌂',
   'color': [205, 133, 63]
 });
