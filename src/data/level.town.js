@@ -1,5 +1,8 @@
 Level.Town = function() {
   Level.call(this);
+
+  // Setup lighting
+  this._ambientLighting = [130, 130, 130];
 };
 Level.Town.extend(Level);
 
@@ -20,7 +23,26 @@ Level.Town.prototype._setupTiles = function() {
     this.setTile((Game.MAP_WIDTH / 2) - 2 + x, Game.MAP_HEIGHT - 1, Tiles.build('wooden-gate'));
   }
 
-  // Road around town
+  this._placeRoad();
+  this._placeTorches();
+
+  // Temporary building
+  this._carveRectangle(5, 5, 5, 3, 'grass', 'stone-wall');
+};
+
+Level.Town.prototype._carveRectangle = function(left, top, width, height, innerTile, outerTile) {
+  for (var x = left; x < left + width; x++) {
+    for (var y = top; y < top + height; y++) {
+      if (x == left || x == left + width - 1 || y == top || y == top + height - 1) {
+        this.setTile(x, y, Tiles.build(outerTile));
+      } else {
+        this.setTile(x, y, Tiles.build(innerTile));
+      }
+    }
+  }
+};
+
+Level.Town.prototype._placeRoad = function() {
   for (var x = 2; x < Game.MAP_WIDTH - 2; x++) {
     this.setTile(x, 2, Tiles.build('road'));
     this.setTile(x, 3, Tiles.build('road'));
@@ -40,7 +62,9 @@ Level.Town.prototype._setupTiles = function() {
 
   this.setTile(Game.MAP_WIDTH / 2, Game.MAP_HEIGHT - 2, Tiles.build('road'));
   this.setTile(-1 + Game.MAP_WIDTH / 2, Game.MAP_HEIGHT - 2, Tiles.build('road'));
+};
 
+Level.Town.prototype._placeTorches = function() {
   // Place torches
   this.setTile(1, 1, Tiles.build('torch'));
   this.setTile(Game.MAP_WIDTH - 2, 1, Tiles.build('torch'));
@@ -52,7 +76,4 @@ Level.Town.prototype._setupTiles = function() {
   this.setTile(Game.MAP_WIDTH / 2 + 1, Game.MAP_HEIGHT / 2 + 1, Tiles.build('weak-torch'));
   this.setTile(Game.MAP_WIDTH / 2 + 1, Game.MAP_HEIGHT - 2, Tiles.build('weak-torch'));
   this.setTile(-2 + Game.MAP_WIDTH / 2, Game.MAP_HEIGHT - 2, Tiles.build('weak-torch'));
-
-  // Setup lighting
-  this._ambientLighting = [130, 130, 130];
 };
