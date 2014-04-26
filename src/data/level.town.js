@@ -27,7 +27,7 @@ Level.Town.prototype._setupTiles = function() {
   this._placeTorches();
 
   // Temporary building
-  this._carveRectangle(5, 5, 5, 3, 'grass', 'stone-wall');
+  this._carveRectangle(5, 5, 5, 3, 'out-of-bounds', 'stone-wall');
 };
 
 Level.Town.prototype._carveRectangle = function(left, top, width, height, innerTile, outerTile) {

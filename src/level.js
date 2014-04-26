@@ -10,13 +10,18 @@ function Level() {
 
   // Create the lighting and fov object.
   this._setupFOV();
-  this._lighting = new ROT.Lighting(function(x, y){ return 0.3; }, {passes: 2, range: 8});
+  var self = this;
+  this._lighting = new ROT.Lighting(function(x, y){ 
+    return self.getTile(x, y).blocksLight() ? 0 : 0.3;
+  }, {passes: 1, range: 8});
   this._lighting.setFOV(this._fov);
   this._lights = {};
   this._lastFrame = -1;
   this._lastColors = {};
   this._isAnimated = false;
 
+  // Cache an empty tile
+  this._emptyTile = Tiles.build('out-of-bounds');
   this._setupTiles();
 };
 
@@ -37,7 +42,10 @@ Level.prototype._setupTiles = function() {};
  * @protected
  */
 Level.prototype._setupFOV = function() {
-  this._fov = new ROT.FOV.PreciseShadowcasting(function(x, y){ return true; }.bind(this), {topology:4});
+  var self = this;
+  this._fov = new ROT.FOV.PreciseShadowcasting(function(x, y){ 
+    return !self.getTile(x, y).blocksLight(); 
+  }, {topology:4});
 };
 
 /**
@@ -79,7 +87,7 @@ Level.prototype.setEntity = function(x, y, entity) {
  * @return {Tile?}   The tile at the position if it is within bounds.
  */
 Level.prototype.getTile = function(x, y) {
-  return this._tiles[this.key(x, y)];
+  return this._tiles[this.key(x, y)] || this._emptyTile;
 };
 
 /**
