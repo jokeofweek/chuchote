@@ -14,6 +14,21 @@ function Repository(ctor) {
  * @param {object} template The template.
  */
 Repository.prototype.add = function(name, template) {
+  // Allow for template extension
+  if (template['extends']) {
+    var newTemplate = {};
+    // First copy over parent to ensure we don't 
+    // add to the actual parent's template.
+    var parent = this.getTemplate(template['extends']);
+    for (var k in parent) {
+      newTemplate[k] = parent[k];
+    }
+    // Then copy over child
+    for (var k in template) {
+      newTemplate[k] = template[k];
+    }
+    template = newTemplate;
+  }
   this._templates[name] = template;
 };
 

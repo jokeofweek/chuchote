@@ -12,6 +12,11 @@ Tiles.add('torch', {
   'blockMovement': true
 });
 
+Tiles.add('weak-torch', {
+  'extends': 'torch',
+  'light': [[150, 100, 0], 50]
+});
+
 Tiles.add('stone-wall', {
   'symbol': '#',
   'color': [170, 170, 190],
