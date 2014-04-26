@@ -29,8 +29,6 @@ Repository.prototype.add = function(name, template) {
     }
     template = newTemplate;
   }
-  // Add this template's name to the template
-  template['template'] = name;
   this._templates[name] = template;
 };
 
