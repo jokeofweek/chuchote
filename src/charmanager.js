@@ -1,9 +1,14 @@
 CharManager = {
   characters: {},
   rolePlayers: {},
+  createVictim: function() {
+    var template = NameGenerator.generate([255, 0, 0]);
+    template.role = 'victim';
+    var character = new Character(template);
+    this.registerCharacter(character);
+  },
   createCharacters: function() {
     var roles = [
-        {role:'victim', color: [255, 0, 0]}, 
         {role:'sheriff', color: [144, 238, 144]}, 
         {role:'priest'}, 
         {role:'bartender'},
@@ -34,23 +39,25 @@ CharManager = {
 
       // Create the character
       var character = new Character(template);
-      
-      // Add the character by name and role
-      this.characters[character.getName()] = character;
+      this.registerCharacter(character);
+    }
+  },
+  registerCharacter: function(character) {
+    // Add the character by name and role
+    this.characters[character.getName()] = character;
 
-      // If there is already a character with that role, turn it into an array
-      // else we keep a direct reference for convenience (eg. only 1 victim)
-      if (this.rolePlayers[character.getRole()]) {
-        if (this.rolePlayers[character.getRole()] instanceof Array) {
-          this.rolePlayers[character.getRole()].push(character);
-        } else {
-          this.rolePlayers[character.getRole()] = [
-            this.rolePlayers[character.getRole()], character
-          ];
-        }
+    // If there is already a character with that role, turn it into an array
+    // else we keep a direct reference for convenience (eg. only 1 victim)
+    if (this.rolePlayers[character.getRole()]) {
+      if (this.rolePlayers[character.getRole()] instanceof Array) {
+        this.rolePlayers[character.getRole()].push(character);
       } else {
-        this.rolePlayers[character.getRole()] = character;
+        this.rolePlayers[character.getRole()] = [
+          this.rolePlayers[character.getRole()], character
+        ];
       }
+    } else {
+      this.rolePlayers[character.getRole()] = character;
     }
   },
   setupFeelings: function() {

@@ -61,6 +61,21 @@ Tiles.add('window', {
   'blockMessage': "It's a window - you can't quite make out what's inside."
 });
 
+Tiles.add('bloody-grass', {
+  'extends': 'grass',
+  'color': [[125, 0, 0], 35]
+})
+
+Tiles.add('bloody-road', {
+  'extends': 'road',
+  'color': [[125, 0, 0], 35]
+})
+
+Tiles.add('victim', {
+  'symbol': '@',
+  'blocksMovement': true
+})
+
 Tiles.add('door', {
   'symbol': '⌂',
   'color': [205, 133, 63]

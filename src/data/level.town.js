@@ -38,6 +38,18 @@ Level.Town.prototype._setupTiles = function() {
     this._generateBuilding(4 + (i * lotWidth), Game.MAP_HEIGHT / 2 + 1, lotWidth, lotHeight);
     this._generateBuilding(Game.MAP_WIDTH / 2 + 1 + (i * lotWidth), Game.MAP_HEIGHT / 2 + 1, lotWidth, lotHeight);
   }
+
+  // Place the victim
+  this.setTile(2, 1, Tiles.build('bloody-grass'));
+  this.setTile(4, 1, Tiles.build('bloody-grass'));
+  this.setTile(3, 2, Tiles.build('bloody-road'));
+
+  // Create the victim and place them
+  CharManager.createVictim();
+  this.setTile(3, 1, Tiles.build('victim', {
+    'color': CharManager.rolePlayers.victim.getColor(),
+    'blockMessage': 'You see ' + CharManager.rolePlayers.victim.getName() + ' lying here in a pool of blood.'
+  }));
 };
 
 Level.Town.prototype._carveRectangle = function(left, top, width, height, innerTile, outerTile) {
