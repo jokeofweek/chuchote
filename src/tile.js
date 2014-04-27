@@ -7,6 +7,8 @@ function Tile(template) {
   this._light = template['light'] || null;
   this._dynamicLight = this._light && this._light[0] instanceof Array;
   this._blockMessage = template['blockMessage'] || 'You bump into something.';
+  // If this is true, then the tile is always visible.
+  this._permanent =  (typeof template['permanent'] === 'boolean') ? template['permanent'] : false;
 };
 Tile.extend(Glyph);
 
@@ -16,6 +18,8 @@ Tile.prototype.blocksMovement = function() { return this._blocksMovement; };
 Tile.prototype.blocksLight = function() { return this._blocksLight; };
 Tile.prototype.getLight = function() { return this._light; };
 Tile.prototype.isDynamicLight = function() { return this._dynamicLight; };
+Tile.prototype.isPermanent = function() { return this._permanent; };
+
 Tile.prototype.getBlockMessage = function() {
   if (this._blockMessage instanceof Array) {
     return this._blockMessage.random();

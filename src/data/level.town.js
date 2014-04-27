@@ -64,7 +64,7 @@ Level.Town.prototype._carveRectangle = function(left, top, width, height, innerT
   }
 };
 
-Level.Town.prototype._generateBuilding = function(left, top, lotWidth, lotHeight) {
+Level.Town.prototype._generateBuilding = function(left, top, lotWidth, lotHeight, icon) {
   // Generate a random width and height
   var buildingWidth = ROT.RNG.getUniformInt(Math.round(lotWidth * 0.6), lotWidth - 2);
   var buildingHeight = ROT.RNG.getUniformInt(Math.round(lotHeight * 0.6), lotHeight - 2);
@@ -95,6 +95,11 @@ Level.Town.prototype._generateBuilding = function(left, top, lotWidth, lotHeight
       this.setTile(pathX, y, Tiles.build('road'));
     }
   }
+
+  // Place an icon in the center
+  var icon = icon || ['icon-bar', 'icon-church', 'icon-house', 'icon-store'].random();
+  this.setTile(Math.floor(left + leftOffset + buildingWidth / 2), 
+      Math.floor(top + topOffset - 1 + buildingHeight / 2), Tiles.build(icon));
 };
 
 Level.Town.prototype._placeRoad = function() {

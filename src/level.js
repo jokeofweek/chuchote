@@ -142,6 +142,11 @@ Level.prototype.draw = function(yOffset) {
         baseColor = [newColor, newColor, newColor];
       }
 
+      // If the object is permanent, then use it's base color
+      if (obj.isPermanent && obj.isPermanent()) {
+        baseColor = obj.getColor();
+      }
+
       Game.display.draw(x, y + yOffset, obj.getSymbol(), ROT.Color.toRGB(baseColor));
     }
   }

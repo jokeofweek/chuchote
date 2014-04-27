@@ -77,6 +77,36 @@ Tiles.add('victim', {
 })
 
 Tiles.add('door', {
+  'symbol': '+',
+  'color': [205, 133, 63]
+});
+
+Tiles.add('icon', {
+  'blocksLight': true,
+  'blocksMovement': true,
+  'permanent': true
+})
+
+Tiles.add('icon-house', {
+  'extends': 'icon',
   'symbol': '⌂',
   'color': [205, 133, 63]
+});
+
+Tiles.add('icon-bar', {
+  'extends': 'icon',
+  'symbol': 'B',
+  'color': [255, 255, 255]
+});
+
+Tiles.add('icon-church', {
+  'extends': 'icon',
+  'symbol': '┼',
+  'color': [255, 255, 255]
+});
+
+Tiles.add('icon-store', {
+  'extends': 'icon',
+  'symbol': '$',
+  'color': [255, 255, 0]
 });
