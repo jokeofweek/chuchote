@@ -236,7 +236,7 @@ Level.key = Level.prototype.key = function(x, y) {
  * @return {array} An array where x is at index 0 and y at index 1
  */
 Level.unkey = Level.prototype.unkey = function(k) {
-  return k.split(',');
+  return k.split(',').map(function(a){return parseInt(a);});
 };
 
 
