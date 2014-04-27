@@ -8,7 +8,8 @@ LoadingScreen.extend(Screen);
  */
 LoadingScreen.prototype._enter = function() {
   this.tasks = [
-    ['Building town...', this._buildTown]
+    ['Building town...', this._buildTown.bind(this)],
+    ['Creating characters...', CharManager.createCharacters.bind(CharManager)]
   ];
   this.totalTasks = this.tasks.length;
 
@@ -57,9 +58,9 @@ LoadingScreen.prototype.doTask = function() {
 
   // Perform the task
   window.setTimeout(function() {
-    currentTask[1].bind(this)();
+    currentTask[1]();
     this.doTask();
-  }.bind(this), 1);
+  }.bind(this), 3000);
 };
 
 LoadingScreen.prototype._buildTown = function() {

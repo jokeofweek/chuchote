@@ -52,7 +52,7 @@ StartScreen.prototype.render = function() {
   Game.display.drawText(Game.SCREEN_WIDTH / 2 - Math.floor(title.length / 2), 5, "%c{rgb(" + textColor.join(',') + ")}" + title);
 
   // Render the plotline
-  var plotLine = "You just found your friend " + Game.victim.name + " dead on the ground. Will you be able to find out who did it?";
+  var plotLine = "You just found your friend " + CharManager.rolePlayers.victim.name + " dead on the ground. Will you be able to find out who did it?";
   Game.display.drawText(Game.SCREEN_WIDTH / 2 - 20, 7, plotLine, 40);
 
   // Render the any key prompt

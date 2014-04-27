@@ -24,7 +24,8 @@ HelpScreen.prototype.render = function() {
   if (this._first) {
     var message = String.format('Welcome to %c{#fff}Chuchote%c{}! The objective of the game is to figure out who murdered your friend ' + 
         '%s. Once you believe that you know who the murderer was, present your evidence to ' +
-        'the %c{#fff}town sheriff%c{} %s. When you are ready to play, press %c{#fff}Enter%c{}.', Game.victim, Game.sheriff);
+        'the %c{#fff}town sheriff%c{} %s. When you are ready to play, press %c{#fff}Enter%c{}.', 
+         CharManager.rolePlayers.victim,  CharManager.rolePlayers.sheriff);
     y += Game.display.drawText(1, y, message, Game.SCREEN_WIDTH - 2) + 1;
   } else {
     var message = 'Help';
