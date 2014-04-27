@@ -31,5 +31,35 @@ CharManager = {
       // Add a neutral feeling for the player
       this.characters[k].setFeelings('player', 0);
     }
+    // Simulate interactions
+    var simulatedInteractions = 0;
+    var interactionNames = Object.keys(Interactions);
+    var characterNames = Object.keys(this.characters);
+
+    // Cache lookup function
+    var self = this;
+    var lookupCharacter = function(k){ return self.characters[k]; };
+
+    while (simulatedInteractions < 1000) {
+      // Pick a random interaction
+      var interaction = Interactions[interactionNames.random()];
+      // Pick prerequisite number of characters
+      var chars = shuffle(characterNames).slice(0, interaction.charactersInvolved).map(lookupCharacter);
+      // If there is a precondition, make sure it works
+      if (interaction.preCondition && !interaction.preCondition.apply(null, chars)) continue;
+      // Actually simulate the interaction
+      this.simulateInteraction(interaction, chars);
+      simulatedInteractions++;
+    }
+  },
+  simulateInteraction: function(interaction, chars) {
+    // If we received a key, convert it to the object
+    var interaction = (typeof interaction === 'string' ? Interactions[interaction] : interaction);
+    // Ensure pre-conditions are met
+    if (interaction.preCondition && !interaction.preCondition.apply(null, chars)) {
+      throw new Error("Interaction '" + interaction.key + "' precondition not met, but was simulated.");
+    }
+    console.log("Interaction '" + interaction.key + "' involving " + chars.map(function(c){return c.getName()}).join(','));
+    interaction.postEffect.apply(null, chars);
   }
 };

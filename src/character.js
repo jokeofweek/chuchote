@@ -7,6 +7,8 @@ function Character(template) {
   // about another character. This feeling is quantified by the range [-100, 100]
   // where -100 represents hate and 100 represents positive.
   this._feelings = {};
+  this._significantOther = null;
+  this._isMarried = false;
 };
 
 Character.prototype.getName = function() { return this._name; };
@@ -19,7 +21,35 @@ Character.prototype.setFeelings = function(otherCharacter, value) {
   this._feelings[name] = value;
 };
 
+Character.prototype.changeFeeling = function(otherCharacter, delta) {
+  this.setFeelings(otherCharacter, this.getFeelings(otherCharacter) + delta);
+};
+
 Character.prototype.getFeelings = function(otherCharacter) {
   var name = (typeof otherCharacter == 'string' ? otherCharacter : otherCharacter.getName());
   return this._feelings[name];
+};
+
+/**
+ * Fetches the significant other of the character if they exist.
+ * @return {Character?} The significant other if there is one.
+ */
+Character.prototype.getSignificantOther = function() {
+  return this._significantOther;
+};
+
+Character.prototype.setSignificantOther = function(other) {
+  this._significantOther = other;
+};
+
+/**
+ * Determines whether a character is married or not.
+ * @return {Boolean} 
+ */
+Character.prototype.isMarried = function() {
+  return this._isMarried;
+};
+
+Character.prototype.setMarried = function(isMarried) {
+  this._isMarried = isMarried;
 };

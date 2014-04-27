@@ -2,6 +2,29 @@
  * This file contains some extra utility functions.
  */
 
+// Taken from http://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+function shuffle(array) {
+  var currentIndex = array.length
+    , temporaryValue
+    , randomIndex
+    ;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
 ROT.Color.randomizeRound = function(color, diff) {
   var newColor = ROT.Color.randomize(color, diff);
   newColor[0] = Math.round(newColor[0]);
@@ -17,6 +40,8 @@ ROT.Color.randomizeClamp = function(color, diff) {
   newColor[2] = Math.max(0, Math.min(255, (newColor[2])));
   return newColor;
 }
+
+
 
 // Set up movement keys and their respective directions.
 var KEYS = {}
