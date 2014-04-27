@@ -9,7 +9,8 @@ LoadingScreen.extend(Screen);
 LoadingScreen.prototype._enter = function() {
   this.tasks = [
     ['Building town...', this._buildTown.bind(this)],
-    ['Creating characters...', CharManager.createCharacters.bind(CharManager)]
+    ['Creating characters...', CharManager.createCharacters.bind(CharManager)],
+    ['Simulating feelings...', CharManager.setupFeelings.bind(CharManager)]
   ];
   this.totalTasks = this.tasks.length;
 
@@ -46,7 +47,7 @@ LoadingScreen.prototype.doTask = function() {
   // Render current task
   var currentTask = this.tasks.shift();
   Game.display.drawText(Game.SCREEN_WIDTH / 2 - Math.round(currentTask[0].length / 2), y, currentTask[0]);
-  y++;
+  y += 2;
 
   // Render progress bar
   var totalBars = 20;
@@ -60,7 +61,7 @@ LoadingScreen.prototype.doTask = function() {
   window.setTimeout(function() {
     currentTask[1]();
     this.doTask();
-  }.bind(this), 3000);
+  }.bind(this), 2000);
 };
 
 LoadingScreen.prototype._buildTown = function() {
