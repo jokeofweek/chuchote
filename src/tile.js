@@ -6,6 +6,7 @@ function Tile(template) {
   this._blocksLight = (typeof template['blocksLight'] === 'boolean') ? template['blocksLight'] : false;
   this._light = template['light'] || null;
   this._dynamicLight = this._light && this._light[0] instanceof Array;
+  this._blockMessage = template['blockMessage'] || 'You bump into something.';
 };
 Tile.extend(Glyph);
 
@@ -15,3 +16,10 @@ Tile.prototype.blocksMovement = function() { return this._blocksMovement; };
 Tile.prototype.blocksLight = function() { return this._blocksLight; };
 Tile.prototype.getLight = function() { return this._light; };
 Tile.prototype.isDynamicLight = function() { return this._dynamicLight; };
+Tile.prototype.getBlockMessage = function() {
+  if (this._blockMessage instanceof Array) {
+    return this._blockMessage.random();
+  } else {
+    return this._blockMessage;
+  }
+};

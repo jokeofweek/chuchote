@@ -127,10 +127,11 @@ GameScreen.prototype.handleEvent = function(e) {
     var newY = Game.player.getY() + offsets[1];
 
     // Only move if the tile doesn't block movement
-    if (!Game.player.getLevel().getTile(newX, newY).blocksMovement()) {
+    var tile = Game.player.getLevel().getTile(newX, newY);
+    if (!tile.blocksMovement()) {
       Game.player.setPosition(newX, newY, Game.player.getLevel());
     } else {
-      Game.gameScreen.writeMessage('You bump into something.');
+      Game.gameScreen.writeMessage(tile.getBlockMessage());
     }
     Game.player.getMovePromise().fulfill();
   }

@@ -8,7 +8,25 @@ CharManager = {
         {role:'priest'}, 
         {role:'bartender'},
         {role:'merchant'}, 
-        {role:'homeless'}];
+        {role:'homeless'},
+        {role:'homeless'},
+        {role:'wealthy'},
+        {role:'wealthy'},
+        {role:'wealthy'},
+        {role:'wealthy'},
+        {role:'villager'},
+        {role:'villager'},
+        {role:'villager'},
+        {role:'villager'},
+        {role:'villager'},
+        {role:'villager'},
+        {role:'villager'},
+        {role:'villager'},
+        {role:'villager'},
+        {role:'poor'},
+        {role:'poor'},
+        {role:'poor'}];
+
     // Generate characters for each role
     for (var i = 0; i < roles.length; i++) {
       var template = NameGenerator.generate(roles[i].color);
@@ -19,7 +37,20 @@ CharManager = {
       
       // Add the character by name and role
       this.characters[character.getName()] = character;
-      this.rolePlayers[character.getRole()] = character;
+
+      // If there is already a character with that role, turn it into an array
+      // else we keep a direct reference for convenience (eg. only 1 victim)
+      if (this.rolePlayers[character.getRole()]) {
+        if (this.rolePlayers[character.getRole()] instanceof Array) {
+          this.rolePlayers[character.getRole()].push(character);
+        } else {
+          this.rolePlayers[character.getRole()] = [
+            this.rolePlayers[character.getRole()], character
+          ];
+        }
+      } else {
+        this.rolePlayers[character.getRole()] = character;
+      }
     }
   },
   setupFeelings: function() {
