@@ -40,7 +40,7 @@ CharManager = {
     var self = this;
     var lookupCharacter = function(k){ return self.characters[k]; };
 
-    while (simulatedInteractions < 1000) {
+    while (simulatedInteractions < 0) {
       // Pick a random interaction
       var interaction = Interactions[interactionNames.random()];
       // Pick prerequisite number of characters

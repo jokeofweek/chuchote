@@ -61,7 +61,7 @@ LoadingScreen.prototype.doTask = function() {
   window.setTimeout(function() {
     currentTask[1]();
     this.doTask();
-  }.bind(this), 2000);
+  }.bind(this), 200);
 };
 
 LoadingScreen.prototype._buildTown = function() {

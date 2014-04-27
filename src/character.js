@@ -53,3 +53,7 @@ Character.prototype.isMarried = function() {
 Character.prototype.setMarried = function(isMarried) {
   this._isMarried = isMarried;
 };
+
+Character.prototype.toString = function() {
+  return this.getName() + " (%c{rgb(" + this._color.join(',') + ")}@%c{})";
+};

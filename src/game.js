@@ -8,6 +8,7 @@ var Game = {
   engine: null,
   scheduler: null,
   gameScreen: null,
+  totalMoves: 0,
   init: function() {
     window.addEventListener('load', this);
   },

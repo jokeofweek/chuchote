@@ -13,6 +13,12 @@ Entity.Player.prototype.act = function() {
   Game.gameScreen.render();
   // Simply create a move promise and wait.
   this._movePromise = new Promise();
+  this._movePromise.then(function() {
+    // Increment the game move counter
+    Game.totalMoves++;
+    // Clear the old messages
+    Game.gameScreen.flushMessages();
+  });
   return this._movePromise;
 };
 

@@ -102,8 +102,9 @@ Level.prototype.exit = function() {};
 
 /**
  * Draws a level.
+ * @param {int} yOffset The y offset to render the screen at.
  */
-Level.prototype.draw = function() {
+Level.prototype.draw = function(yOffset) {
   this._preDraw();
 
   this._addDynamicLights();
@@ -141,7 +142,7 @@ Level.prototype.draw = function() {
         baseColor = [newColor, newColor, newColor];
       }
 
-      Game.display.draw(x, y, obj.getSymbol(), ROT.Color.toRGB(baseColor));
+      Game.display.draw(x, y + yOffset, obj.getSymbol(), ROT.Color.toRGB(baseColor));
     }
   }
 

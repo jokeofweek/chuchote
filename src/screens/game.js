@@ -2,6 +2,9 @@ function GameScreen() {
   Screen.call(this);
   this._animationTimer = null;
   this._animationFrame = 0;
+  this._messages = [];
+  // The maximum number of turns for a message to stay on screen.
+  this._messageMaxTurns = 10;
 };
 GameScreen.extend(Screen);
 
@@ -15,6 +18,28 @@ GameScreen.prototype._enter = function() {
 GameScreen.prototype._exit = function(first_argument) {
   // Stop any animation timer
   this._stopAnimationTimer();
+};
+/**
+ * Adds a message to show the player. 
+ * @param  {string} message 
+ */
+GameScreen.prototype.writeMessage = function(message) {
+  // If we have the maximum number of messages, remove the oldest message
+  if (this._messages.length === Game.TEXT_HEIGHT) this._messages.shift();
+  // Add the message and the number of turns that have passed.
+  this._messages.push([Game.totalMoves, message]);
+};
+
+/**
+ * Clears the list of old messages currently displayed to the player.
+ */
+GameScreen.prototype.flushMessages = function() {
+  for (var i = this._messages.length - 1; i >= 0; i--) {
+    // If the message is too old, remove it.
+    if (Game.totalMoves - this._messages[i][0] >= this._messageMaxTurns) {
+      this._messages.splice(i, 1);
+    }
+  }
 };
 
 /**
@@ -66,8 +91,14 @@ GameScreen.prototype.getAnimationFrame = function() {
 GameScreen.prototype.render = function() {
   // If no current level, don't render
   if (!Game.currentLevel) return;
+  // Render the messages
+  for (var i = 0; i < this._messages.length; i++) {
+    var color = ROT.Color.interpolate([0, 0, 0], [255, 255, 255], 
+        (this._messageMaxTurns - (Game.totalMoves - (this._messages[i][0] + 1))) / this._messageMaxTurns);
+    Game.display.drawText(0, i, "%c{rgb(" + color.join(',') +')}' + this._messages[i][1]);
+  }
   // Render the level
-  Game.currentLevel.draw();
+  Game.currentLevel.draw(Game.TEXT_HEIGHT);
 };
 
 /**
@@ -98,6 +129,8 @@ GameScreen.prototype.handleEvent = function(e) {
     // Only move if the tile doesn't block movement
     if (!Game.player.getLevel().getTile(newX, newY).blocksMovement()) {
       Game.player.setPosition(newX, newY, Game.player.getLevel());
+    } else {
+      Game.gameScreen.writeMessage('You bump into something.');
     }
     Game.player.getMovePromise().fulfill();
   }
