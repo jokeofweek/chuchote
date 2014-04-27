@@ -47,7 +47,8 @@ var Game = {
               Game.engine = new ROT.Engine(Game.scheduler);  
               // Set up the player
               Game.player = Entities.build('human', {name: 'player', ctor: Entity.Player});
-              Game.player.setPosition(5, 5, Levels.town);
+              var startingPosition = Level.unkey(Levels.town.getTileKeyById('starting-position'));
+              Game.player.setPosition(startingPosition[0], startingPosition[1], Levels.town);
               // Switch the game level.
               Game.switchLevel(Levels.town);          
               Game.engine.start();

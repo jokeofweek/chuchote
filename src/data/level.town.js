@@ -40,7 +40,7 @@ Level.Town.prototype._setupTiles = function() {
   }
 
   // Place the victim
-  this.setTile(2, 1, Tiles.build('bloody-grass'));
+  this.setTile(2, 1, Tiles.build('bloody-grass', {id: 'starting-position'}));
   this.setTile(4, 1, Tiles.build('bloody-grass'));
   this.setTile(3, 2, Tiles.build('bloody-road'));
 
