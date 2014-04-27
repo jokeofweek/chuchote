@@ -69,3 +69,6 @@ KEYS[ROT.VK_NUMPAD4] = 6;
 KEYS[ROT.VK_Y] = 7;
 KEYS[ROT.VK_HOME] = 7;
 KEYS[ROT.VK_NUMPAD7] = 7;
+
+// Set up the string formatters
+String.format.map.rep = "representation";

@@ -20,3 +20,6 @@ function Glyph(template) {
 
 Glyph.prototype.getSymbol = function() { return this._symbol; };
 Glyph.prototype.getColor = function() { return this._color; };
+Glyph.prototype.representation = function() {
+  return '%c{' + ROT.Color.toHex(this.getColor()) + '}' + this.getSymbol() + '%c{}';
+};
