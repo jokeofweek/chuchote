@@ -231,3 +231,18 @@ Tiles.add('fountain', {
     "Careful, you don't want to fall into the fountain."
   ]
 });
+
+Tiles.add('fence', {
+  'symbol': '-',
+  'blocksMovement': true,
+  'color': [210, 105, 30],
+  'blockMessage': [
+    "A fence is blocking your way.",
+    "You bump into a fence.",
+  ]
+});
+
+Tiles.add('gravestone', {
+  'symbol': '∩',
+  'color': [[200, 200, 200], 30]
+})

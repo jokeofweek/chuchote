@@ -202,6 +202,59 @@ Level.Town.prototype._getRandomPosition = function(availablePositions, width) {
 };
 
 /**
+ * This places a centered template on a given lot.
+ * @param  {int} group         The group.
+ * @param  {int} index         The index.
+ * @param  {int} lotWidth      The general lot width.
+ * @param  {int} buildingWidth The width that this building will take up (eg. multi-lot buildings)
+ * @param  {int} lotHeight     The general lot height
+ * @param  {array} template      An array of strings representing the template
+ * @param  {function(string):Tile?} mapperFn      A function maps symbols to tiles in the template.
+ */
+Level.Town.prototype._placeCenteredTemplate = function(group, index, lotWidth, buildingWidth, lotHeight, template, mapperFn) {
+  // Get the center of the lot.
+  var center = this._getLotPosition(group, index, lotWidth);
+  center[0] += Math.round(buildingWidth / 2);
+  center[1] += Math.round(lotHeight / 2);
+
+  var offsetX = center[0] - Math.floor(template[0].length / 2);
+  var offsetY = center[1] - Math.floor(template.length / 2);
+
+  for (var y = 0; y < template.length; y++) {
+    for (var x = 0; x < template[0].length; x++) {
+      var tile = mapperFn(template[y][x]);
+      if (tile) {
+        this.setTile(offsetX + x, offsetY + y, tile);
+      }
+    }
+  }
+};
+
+Level.Town.prototype._placeChurch = function(group, index, lotWidth, lotHeight) {
+  var template = [
+  "#########──────┐",
+  "#       #g.g.g.│",
+  "#   t   #......│",
+  "#       #g.g.g.│",
+  "#### ####══════╛",
+  "...#+#..........",
+  "....r..........."
+  ];
+  this._placeCenteredTemplate(group, index, lotWidth, lotWidth * 2, lotHeight, template, function(symbol) {
+    switch (symbol) {
+      case '#': return Tiles.build('stone-wall');
+      case 't': return Tiles.build('icon-church');
+      case ' ': return Tiles.build('out-of-bounds');
+      case 'g': return Tiles.build('gravestone');
+      case '+': return Tiles.build('door', {warp: 'church'});
+      case 'r': return Tiles.build('road', {id: 'doorfront-church'});
+      case '.': return;
+      default: return Tiles.build('fence', {symbol: symbol});
+    }
+  });
+};
+
+/**
  * Places a fountain at a given lot
  * @param  {int} group The lot group.
  * @param  {int} index The lot index.
@@ -217,29 +270,14 @@ Level.Town.prototype._placeFountain = function(group, index, lotWidth, lotHeight
     ".╚═══╝."
   ];
 
-  // Get the center of the lot.
-  var center = this._getLotPosition(group, index, lotWidth);
-  center[0] += Math.round(lotWidth / 2);
-  center[1] += Math.round(lotHeight / 2);
-
-  var offsetX = center[0] - Math.floor(template[0].length / 2);
-  var offsetY = center[1] - Math.floor(template.length / 2);
-
-  for (var y = 0; y < template.length; y++) {
-    for (var x = 0; x < template[0].length; x++) {
-      var symbol = template[y][x];
-      // Assign corresponding tile depending on symbol
-      if (symbol == '.') { 
-        continue;
-      } else if (symbol == 'S') {
-        this.setTile(offsetX + x, offsetY + y, Tiles.build('statue'));
-      } else if (symbol == '~') {
-        this.setTile(offsetX + x, offsetY + y, Tiles.build('water'));
-      } else {
-        this.setTile(offsetX + x, offsetY + y, Tiles.build('fountain', {'symbol': symbol}));
-      }
+  this._placeCenteredTemplate(group, index, lotWidth, lotWidth, lotHeight, template, function(symbol) {
+    switch(symbol) {
+      case '.': return;
+      case 'S': return Tiles.build('statue');
+      case '~': return Tiles.build('water');
+      default: return Tiles.build('fountain', {symbol: symbol});
     }
-  }
+  });
 };
 
 Level.Town.prototype._placeBuildings = function() {
@@ -273,12 +311,7 @@ Level.Town.prototype._placeBuildings = function() {
     'centeredDoor': true
   });
 
-  position = this._getLotPosition(churchLocation[0], churchLocation[1], lotWidth);
-  this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight, 'icon-church', {
-    'warp': 'church', 
-    'doorfrontId': 'doorfront-church',
-    'centeredDoor': true
-  });
+  this._placeChurch(churchLocation[0], churchLocation[1], lotWidth, lotHeight);
 
   position = this._getLotPosition(storeLocation[0], storeLocation[1], lotWidth);
   this._generateBuilding(position[0], position[1], lotWidth, lotHeight, 'icon-store');
