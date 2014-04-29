@@ -139,9 +139,9 @@ Level.Town.prototype._placeTorches = function() {
 Level.prototype._getLotPosition = function(group, index, lotWidth) {
   switch (group) {
     case 0: return [4 + (index * lotWidth), 4];
-    case 1: return [Game.MAP_WIDTH / 2 + 1 + (i * lotWidth), 4];
-    case 2: return [4 + (i * lotWidth), Game.MAP_HEIGHT / 2 + 1];
-    case 3: return [Game.MAP_WIDTH / 2 + 1 + (i * lotWidth), Game.MAP_HEIGHT / 2 + 1];
+    case 1: return [Game.MAP_WIDTH / 2 + 1 + (index * lotWidth), 4];
+    case 2: return [4 + (index * lotWidth), Game.MAP_HEIGHT / 2 + 1];
+    case 3: return [Game.MAP_WIDTH / 2 + 1 + (index * lotWidth), Game.MAP_HEIGHT / 2 + 1];
     default: throw new Error('Invalid position.');
   }
 };
@@ -152,18 +152,32 @@ Level.prototype._placeBuildings = function() {
   var lotWidth = lotsWidth / totalLots;
   var lotHeight = 6;
 
-  // Pick random locations for the bar and the church
+  // Pick random locations for the bar and the church. The locations are
+  // described by [group, index]. Index can not be the last tile as we want
+  // to make the bar and the church 2 lots wide.
   var barLocation = [ROT.RNG.getUniformInt(0, 3), ROT.RNG.getUniformInt(0, 2)];
   var churchLocation;
   do {
     churchLocation = [ROT.RNG.getUniformInt(0, 3), ROT.RNG.getUniformInt(0, 2)]
-  } while (churchLocation[0] != barLocation[0]);
+  } while (churchLocation[0] == barLocation[0]);
 
 
   for (var i = 0; i < totalLots; i++) {
     for (var group = 0; group < 4; group++) {
-      var position = this._getLotPosition(group, i, lotWidth);
-      this._generateBuilding(position[0], position[1], lotWidth, lotHeight):
+      // Need to test for both bar and church if it is time to render. We also
+      // need to test if we are at the lot right after the church / bar.
+       var position = this._getLotPosition(group, i, lotWidth); 
+      if (barLocation[0] == group && i == barLocation[1]) {
+        this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight);
+      } else if (barLocation[0] == group && i == barLocation[1] + 1) {
+        continue;
+      } else if (churchLocation[0] == group && i == churchLocation[1]) {
+        this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight);
+      } else if (churchLocation[0] == group && i == churchLocation[1] + 1) {
+        continue;
+      } else {
+        this._generateBuilding(position[0], position[1], lotWidth, lotHeight);
+      }
     }
   }
 };
