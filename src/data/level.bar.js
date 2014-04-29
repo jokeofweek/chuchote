@@ -50,10 +50,7 @@ Level.Bar.prototype._mapTile = function(symbol) {
 
   if (symbol == '+') {
     // Get the warp position from the town
-    var warpPosition = Level.unkey(Levels.town.getTileKeyById('doorfront-bar'));
-    return Tiles.build('door', {
-      'warp': [warpPosition[0], warpPosition[1], 'town']
-    });
+    return Tiles.build('door', {'warp': ['town', 'doorfront-bar']});
   } else if (symbol == '@') {
     return Tiles.build('ground', {'id': 'warp-destination'});
   }

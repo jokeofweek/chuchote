@@ -19,7 +19,7 @@ Level.Church.prototype._getTemplate = function() {
     "#.....---.....#",
     "#{===}---{===}#",
     "#.....---.....#",
-    "#{===}---{===}#",
+    "#{===}-------$%",
     "#.....---.....#",
     "#{===}---{===}#",
     "#.....---.....#",
@@ -50,14 +50,16 @@ Level.Church.prototype._mapTile = function(symbol) {
     return Tiles.build(map[symbol]);
   }
 
-  if (symbol == '+') {
+  if (symbol == '%') {
     // Get the warp position from the town
-    var warpPosition = Level.unkey(Levels.town.getTileKeyById('doorfront-church'));
-    return Tiles.build('door', {
-      'warp': [warpPosition[0], warpPosition[1], 'town']
-    });
+    return Tiles.build('door', {'warp': ['town', 'doorfront-graveyard']});
+  } else if (symbol == '+') {
+    // Get the warp position from the town
+    return Tiles.build('door', {'warp': ['town', 'doorfront-church']});
   } else if (symbol == '@') {
     return Tiles.build('carpet', {'id': 'warp-destination'});
+  } else if (symbol == '$') {
+    return Tiles.build('carpet', {'id': 'doorfront-church-graveyard'});
   }
 
   // for now...

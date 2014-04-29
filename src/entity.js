@@ -49,13 +49,19 @@ Entity.prototype.setPosition = function(x, y, level) {
 Entity.prototype.warp = function(warp) {
   var x, y, level;
   if (warp instanceof Array) {
-    x = warp[0];
-    y = warp[1];
+    // Get the level and the id
+    var level = Levels[warp[0]];
     // Make sure the level is valid.
-    var level = Levels[warp[2]];
     if (!level) {
-      throw new Error('Level not found: ' + levelName);
+      throw new Error('Level not found: ' + warp[0]);
     }
+    // Get the warp-destination
+    var warpPosition = Level.unkey(level.getTileKeyById(warp[1]));
+    if (!warpPosition) {
+      throw new Error('No tile with ID ' + warp[1] + ' to warp to on level ' + level);
+    }
+    x = warpPosition[0];
+    y = warpPosition[1];
   } else {
     // In this case we just have the level name.
     var level = Levels[warp];

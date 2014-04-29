@@ -54,7 +54,7 @@ Level.Town.prototype._carveRectangle = function(left, top, width, height, innerT
 
 Level.Town.prototype._generateBuilding = function(left, top, lotWidth, lotHeight, icon, options) {
   var options = options || {};
-  var warp = options['warp'] || [3, 3, 'town'];
+  var warp = options['warp'] || ['town', 'starting-position'];
   var doorfrontId = options['doorfrontId'] || 'doorfront';
   var centeredDoor = options['centeredDoor'] || false;
 
@@ -234,7 +234,7 @@ Level.Town.prototype._placeChurch = function(group, index, lotWidth, lotHeight) 
   var template = [
   "#########──────┐",
   "#       #g.g.g.│",
-  "#   t   #......│",
+  "#   t   %@.....│",
   "#       #g.g.g.│",
   "#### ####══════╛",
   "...#+#..........",
@@ -247,7 +247,9 @@ Level.Town.prototype._placeChurch = function(group, index, lotWidth, lotHeight) 
       case ' ': return Tiles.build('out-of-bounds');
       case 'g': return Tiles.build('gravestone');
       case '+': return Tiles.build('door', {warp: 'church'});
+      case '%': return Tiles.build('door', {warp: ['church', 'doorfront-church-graveyard']});
       case 'r': return Tiles.build('road', {id: 'doorfront-church'});
+      case '@': return Tiles.build('grass', {id: 'doorfront-graveyard'});
       case '.': return;
       default: return Tiles.build('fence', {symbol: symbol});
     }
