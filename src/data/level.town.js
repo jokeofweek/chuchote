@@ -72,7 +72,9 @@ Level.Town.prototype._generateBuilding = function(left, top, lotWidth, lotHeight
 
   // Place the door randomly
   var doorX = ROT.RNG.getUniformInt(0, buildingWidth - 3);
-  this.setTile(left + leftOffset + doorX + 1, bottomWallY, Tiles.build('door'));
+  this.setTile(left + leftOffset + doorX + 1, bottomWallY, Tiles.build('door', {
+    "warp": [3, 3, 'town']
+  }));
   // Carve path down from door
   var pathX = left + leftOffset + doorX + 1;
   for (var y = bottomWallY + 1; y < top + topOffset + lotHeight; y++) {

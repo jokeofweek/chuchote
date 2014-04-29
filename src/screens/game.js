@@ -128,7 +128,10 @@ GameScreen.prototype.handleEvent = function(e) {
 
     // Only move if the tile doesn't block movement
     var tile = Game.player.getLevel().getTile(newX, newY);
-    if (!tile.blocksMovement()) {
+    // If the tile has a warp
+    if (tile.getWarp()) {
+      Game.player.warp.apply(Game.player, tile.getWarp());
+    } else if (!tile.blocksMovement()) {
       Game.player.setPosition(newX, newY, Game.player.getLevel());
     } else {
       Game.gameScreen.writeMessage(tile.getBlockMessage());

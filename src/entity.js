@@ -43,6 +43,21 @@ Entity.prototype.setPosition = function(x, y, level) {
 };
 
 /**
+ * This warps an entity to another level.
+ * @param  {int} x         
+ * @param  {int} y         
+ * @param  {string} levelName 
+ */
+Entity.prototype.warp = function(x, y, levelName) {
+  // First we have to find the level.
+  var level = Levels[levelName];
+  if (!level) {
+    throw new Error('Level not found: ' + levelName);
+  }
+  this.setPosition(x, y, level);
+};
+
+/**
  * Kills an entity.
  */
 Entity.prototype.die = function() {

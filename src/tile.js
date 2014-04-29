@@ -9,6 +9,9 @@ function Tile(template) {
   this._blockMessage = template['blockMessage'] || 'You bump into something.';
   // If this is true, then the tile is always visible.
   this._permanent =  (typeof template['permanent'] === 'boolean') ? template['permanent'] : false;
+  // A tile can define a position to warp to when stepped on. This position is a 3-d array of
+  // [x, y, level name]
+  this._warp = template['warp'];
 };
 Tile.extend(Glyph);
 
@@ -19,6 +22,7 @@ Tile.prototype.blocksLight = function() { return this._blocksLight; };
 Tile.prototype.getLight = function() { return this._light; };
 Tile.prototype.isDynamicLight = function() { return this._dynamicLight; };
 Tile.prototype.isPermanent = function() { return this._permanent; };
+Tile.prototype.getWarp = function() { return this._warp; };
 
 Tile.prototype.getBlockMessage = function() {
   if (this._blockMessage instanceof Array) {
@@ -27,3 +31,4 @@ Tile.prototype.getBlockMessage = function() {
     return this._blockMessage;
   }
 };
+
