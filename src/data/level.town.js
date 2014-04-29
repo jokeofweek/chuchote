@@ -183,9 +183,8 @@ Level.Town.prototype._placeBuildings = function() {
   var storeLocation;
   do {
     storeLocation = [ROT.RNG.getUniformInt(0, 3), ROT.RNG.getUniformInt(0, 3)];
-  } while ((storeLocation == barLocation[0] && (storeLocation == barLocation[1] || storeLocation == barLocation[1] + 1)) ||
-      (storeLocation == churchLocation[0] && (storeLocation == churchLocation[1] || storeLocation == churchLocation[1] + 1)));
-
+  } while ((storeLocation[0] == barLocation[0] && (storeLocation[1] == barLocation[1] || storeLocation[1] == barLocation[1] + 1)) ||
+      (storeLocation[0] == churchLocation[0] && (storeLocation[1] == churchLocation[1] || storeLocation[1] == churchLocation[1] + 1)));
 
   for (var i = 0; i < totalLots; i++) {
     for (var group = 0; group < 4; group++) {
