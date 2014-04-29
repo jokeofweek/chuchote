@@ -85,7 +85,6 @@ Level.Town.prototype._generateBuilding = function(left, top, lotWidth, lotHeight
   }
 
   // Place an icon in the center
-  var icon = icon || ['icon-bar', 'icon-church', 'icon-house', 'icon-store'].random();
   this.setTile(Math.floor(left + leftOffset + buildingWidth / 2), 
       Math.floor(top + topOffset - 1 + buildingHeight / 2), Tiles.build(icon));
 };
@@ -154,12 +153,18 @@ Level.prototype._placeBuildings = function() {
 
   // Pick random locations for the bar and the church. The locations are
   // described by [group, index]. Index can not be the last tile as we want
-  // to make the bar and the church 2 lots wide.
+  // to make the bar and the church 2 lots wide. We finally need to pick a
+  // store location.
   var barLocation = [ROT.RNG.getUniformInt(0, 3), ROT.RNG.getUniformInt(0, 2)];
   var churchLocation;
   do {
     churchLocation = [ROT.RNG.getUniformInt(0, 3), ROT.RNG.getUniformInt(0, 2)]
   } while (churchLocation[0] == barLocation[0]);
+  var storeLocation;
+  do {
+    storeLocation = [ROT.RNG.getUniformInt(0, 3), ROT.RNG.getUniformInt(0, 3)];
+  } while ((storeLocation == barLocation[0] && (storeLocation == barLocation[1] || storeLocation == barLocation[1] + 1)) ||
+      (storeLocation == churchLocation[0] && (storeLocation == churchLocation[1] || storeLocation == churchLocation[1] + 1)));
 
 
   for (var i = 0; i < totalLots; i++) {
@@ -168,15 +173,16 @@ Level.prototype._placeBuildings = function() {
       // need to test if we are at the lot right after the church / bar.
        var position = this._getLotPosition(group, i, lotWidth); 
       if (barLocation[0] == group && i == barLocation[1]) {
-        this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight);
+        this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight, 'icon-bar');
       } else if (barLocation[0] == group && i == barLocation[1] + 1) {
         continue;
       } else if (churchLocation[0] == group && i == churchLocation[1]) {
-        this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight);
+        this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight, 'icon-church');
       } else if (churchLocation[0] == group && i == churchLocation[1] + 1) {
         continue;
       } else {
-        this._generateBuilding(position[0], position[1], lotWidth, lotHeight);
+        this._generateBuilding(position[0], position[1], lotWidth, lotHeight,
+            (group == storeLocation[0] && i == storeLocation[1]) ? 'icon-store' : 'icon-house');
       }
     }
   }
