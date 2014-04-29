@@ -52,7 +52,11 @@ Level.Town.prototype._carveRectangle = function(left, top, width, height, innerT
   }
 };
 
-Level.Town.prototype._generateBuilding = function(left, top, lotWidth, lotHeight, icon, warp, doorfrontId) {
+Level.Town.prototype._generateBuilding = function(left, top, lotWidth, lotHeight, icon, options) {
+  var options = options || {};
+  var warp = options['warp'] || [3, 3, 'town'];
+  var doorfrontId = options['doorfrontId'] || 'doorfront';
+  var centeredDoor = options['centeredDoor'] || false;
 
   // Generate a random width and height
   var buildingWidth = ROT.RNG.getUniformInt(Math.round(lotWidth * 0.6), lotWidth - 2);
@@ -71,10 +75,15 @@ Level.Town.prototype._generateBuilding = function(left, top, lotWidth, lotHeight
     this.setTile(left + leftOffset + windowX + 1, bottomWallY, Tiles.build('window'));
   }
 
-  // Place the door randomly
-  var doorX = ROT.RNG.getUniformInt(0, buildingWidth - 3);
+  // Place the door
+  var doorX; 
+  if (centeredDoor) {
+    doorX = Math.ceil((buildingWidth - 3) / 2);
+  } else {
+    doorX = ROT.RNG.getUniformInt(0, buildingWidth - 3);
+  }
   this.setTile(left + leftOffset + doorX + 1, bottomWallY, Tiles.build('door', {
-    "warp": warp || [3, 3, 'town']
+    "warp": warp
   }));
 
   // Carve path down from door
@@ -184,11 +193,19 @@ Level.Town.prototype._placeBuildings = function() {
       // need to test if we are at the lot right after the church / bar.
        var position = this._getLotPosition(group, i, lotWidth); 
       if (barLocation[0] == group && i == barLocation[1]) {
-        this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight, 'icon-bar', 'bar', 'doorfront-bar');
+        this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight, 'icon-bar', {
+          'warp': 'bar', 
+          'doorfrontId': 'doorfront-bar',
+          'centeredDoor': true
+        });
       } else if (barLocation[0] == group && i == barLocation[1] + 1) {
         continue;
       } else if (churchLocation[0] == group && i == churchLocation[1]) {
-        this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight, 'icon-church');
+        this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight, 'icon-church', {
+          'warp': 'church', 
+          'doorfrontId': 'doorfront-church',
+          'centeredDoor': true
+        });
       } else if (churchLocation[0] == group && i == churchLocation[1] + 1) {
         continue;
       } else {

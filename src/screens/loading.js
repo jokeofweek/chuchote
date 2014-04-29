@@ -67,4 +67,5 @@ LoadingScreen.prototype.doTask = function() {
 LoadingScreen.prototype._setupLevels = function() {
   Levels.town = new Level.Town();
   Levels.bar = new Level.Bar();
+  Levels.church = new Level.Church();
 };
