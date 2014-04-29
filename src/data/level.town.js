@@ -25,21 +25,9 @@ Level.Town.prototype._setupTiles = function() {
 
   this._placeRoad();
   this._placeTorches();
+  this._placeBuildings();
 
-  // Temporary building
-  var lotsWidth = 44;
-  var totalLots = 4;
-  var lotWidth = lotsWidth / totalLots;
-  var lotHeight = 6;
-
-  for (var i = 0; i < totalLots; i++) {
-    this._generateBuilding(4 + (i * lotWidth), 4, lotWidth, lotHeight);
-    this._generateBuilding(Game.MAP_WIDTH / 2 + 1 + (i * lotWidth), 4, lotWidth, lotHeight);
-    this._generateBuilding(4 + (i * lotWidth), Game.MAP_HEIGHT / 2 + 1, lotWidth, lotHeight);
-    this._generateBuilding(Game.MAP_WIDTH / 2 + 1 + (i * lotWidth), Game.MAP_HEIGHT / 2 + 1, lotWidth, lotHeight);
-  }
-
-  // Place the victim
+    // Place the victim
   this.setTile(2, 1, Tiles.build('bloody-grass', {id: 'starting-position'}));
   this.setTile(4, 1, Tiles.build('bloody-grass'));
   this.setTile(3, 2, Tiles.build('bloody-road'));
@@ -136,4 +124,46 @@ Level.Town.prototype._placeTorches = function() {
   this.setTile(Game.MAP_WIDTH / 2 + 1, Game.MAP_HEIGHT / 2 + 1, Tiles.build('weak-torch'));
   this.setTile(Game.MAP_WIDTH / 2 + 1, Game.MAP_HEIGHT - 2, Tiles.build('weak-torch'));
   this.setTile(-2 + Game.MAP_WIDTH / 2, Game.MAP_HEIGHT - 2, Tiles.build('weak-torch'));
+};
+
+/**
+ * Calculates the position of a given building lot.
+ * @param  {int} group    The group to which the lot belongs to. The groups are indexed
+ *                        as follows:
+ *                        0 1
+ *                        2 3
+ * @param  {int} index    The index of the lot within the group, from left to right.
+ * @param  {int} lotWidth The width of the lot
+ * @return {array}          The x and y coordinate of the top left point of the lot.
+ */
+Level.prototype._getLotPosition = function(group, index, lotWidth) {
+  switch (group) {
+    case 0: return [4 + (index * lotWidth), 4];
+    case 1: return [Game.MAP_WIDTH / 2 + 1 + (i * lotWidth), 4];
+    case 2: return [4 + (i * lotWidth), Game.MAP_HEIGHT / 2 + 1];
+    case 3: return [Game.MAP_WIDTH / 2 + 1 + (i * lotWidth), Game.MAP_HEIGHT / 2 + 1];
+    default: throw new Error('Invalid position.');
+  }
+};
+
+Level.prototype._placeBuildings = function() {
+  var lotsWidth = 44;
+  var totalLots = 4;
+  var lotWidth = lotsWidth / totalLots;
+  var lotHeight = 6;
+
+  // Pick random locations for the bar and the church
+  var barLocation = [ROT.RNG.getUniformInt(0, 3), ROT.RNG.getUniformInt(0, 2)];
+  var churchLocation;
+  do {
+    churchLocation = [ROT.RNG.getUniformInt(0, 3), ROT.RNG.getUniformInt(0, 2)]
+  } while (churchLocation[0] != barLocation[0]);
+
+
+  for (var i = 0; i < totalLots; i++) {
+    for (var group = 0; group < 4; group++) {
+      var position = this._getLotPosition(group, i, lotWidth);
+      this._generateBuilding(position[0], position[1], lotWidth, lotHeight):
+    }
+  }
 };
