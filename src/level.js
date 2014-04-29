@@ -140,6 +140,9 @@ Level.prototype.draw = function(yOffset) {
         // all fog tiles to grayscale.
         var newColor = Math.round((0.299 * baseColor[0]) + (0.587 * baseColor[1]) + (0.114 * baseColor[2]));
         baseColor = [newColor, newColor, newColor];
+      } else {
+        // Simply apply regular ambient lighting if no fog.
+        baseColor = ROT.Color.multiply(baseColor, this._ambientLight);
       }
 
       // If the object is permanent, then use it's base color

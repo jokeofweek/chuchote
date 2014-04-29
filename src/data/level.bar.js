@@ -2,7 +2,7 @@ Level.Bar = function() {
   Level.call(this);
 
   // Setup lighting
-  this._ambientLighting = [200, 200, 200];
+  this._hasFog = false;
 };
 Level.Bar.extend(Level);
 
