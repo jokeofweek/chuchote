@@ -44,15 +44,32 @@ Entity.prototype.setPosition = function(x, y, level) {
 
 /**
  * This warps an entity to another level.
- * @param  {int} x         
- * @param  {int} y         
- * @param  {string} levelName 
+ * @param  {string|array} The warp object.
  */
-Entity.prototype.warp = function(x, y, levelName) {
-  // First we have to find the level.
-  var level = Levels[levelName];
-  if (!level) {
-    throw new Error('Level not found: ' + levelName);
+Entity.prototype.warp = function(warp) {
+  var x, y, level;
+  if (warp instanceof Array) {
+    x = warp[0];
+    y = warp[1];
+    // Make sure the level is valid.
+    var level = Levels[warp[2]];
+    if (!level) {
+      throw new Error('Level not found: ' + levelName);
+    }
+  } else {
+    // In this case we just have the level name.
+    var level = Levels[warp];
+    if (!level) {
+      throw new Error('Level not found: ' + levelName);
+    }
+    // Get the warp-destination
+    var warpPosition = level.getTileKeyById('warp-destination');
+    if (!warpPosition) {
+      throw new Error('No warp destination for level ' + warp);
+    }
+    x = warpPosition[0];
+    y = warpPosition[1];
+  
   }
   this.setPosition(x, y, level);
 };

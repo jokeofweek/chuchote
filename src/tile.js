@@ -10,7 +10,8 @@ function Tile(template) {
   // If this is true, then the tile is always visible.
   this._permanent =  (typeof template['permanent'] === 'boolean') ? template['permanent'] : false;
   // A tile can define a position to warp to when stepped on. This position is a 3-d array of
-  // [x, y, level name]
+  // [x, y, level name]. It can also be just a level name, assuming the level has a tile with
+  // the id warp-destination.
   this._warp = template['warp'];
 };
 Tile.extend(Glyph);
