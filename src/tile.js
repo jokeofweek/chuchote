@@ -28,6 +28,8 @@ Tile.prototype.getWarp = function() { return this._warp; };
 Tile.prototype.getBlockMessage = function() {
   if (this._blockMessage instanceof Array) {
     return this._blockMessage.random();
+  } else if (typeof this._blockMessage == 'function') {
+    return this._blockMessage();
   } else {
     return this._blockMessage;
   }
