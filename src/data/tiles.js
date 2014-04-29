@@ -244,5 +244,7 @@ Tiles.add('fence', {
 
 Tiles.add('gravestone', {
   'symbol': '∩',
-  'color': [[200, 200, 200], 30]
+  'color': [[200, 200, 200], 30],
+  'blocksMovement': true,
+  'ctor': 'Tile.Gravestone'
 })

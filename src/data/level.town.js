@@ -234,7 +234,7 @@ Level.Town.prototype._placeChurch = function(group, index, lotWidth, lotHeight) 
   var template = [
   "#########──────┐",
   "#       #g.g.g.│",
-  "#   t   %@.....│",
+  "#   t   %@......",
   "#       #g.g.g.│",
   "#### ####══════╛",
   "...#+#..........",

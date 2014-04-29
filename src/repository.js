@@ -62,6 +62,9 @@ Repository.prototype.build = function(name, extra) {
   var ctor = this._ctor;
   if (template['ctor']) {
     ctor = template['ctor'];
+    if (typeof ctor === 'string') {
+      ctor = eval(ctor);
+    }
   }
 
   // Create the object
