@@ -52,7 +52,8 @@ Level.Town.prototype._carveRectangle = function(left, top, width, height, innerT
   }
 };
 
-Level.Town.prototype._generateBuilding = function(left, top, lotWidth, lotHeight, icon, warp) {
+Level.Town.prototype._generateBuilding = function(left, top, lotWidth, lotHeight, icon, warp, doorfrontId) {
+
   // Generate a random width and height
   var buildingWidth = ROT.RNG.getUniformInt(Math.round(lotWidth * 0.6), lotWidth - 2);
   var buildingHeight = ROT.RNG.getUniformInt(Math.round(lotHeight * 0.6), lotHeight - 2);
@@ -75,10 +76,18 @@ Level.Town.prototype._generateBuilding = function(left, top, lotWidth, lotHeight
   this.setTile(left + leftOffset + doorX + 1, bottomWallY, Tiles.build('door', {
     "warp": warp || [3, 3, 'town']
   }));
+
   // Carve path down from door
   var pathX = left + leftOffset + doorX + 1;
+  var firstRoad = true;
   for (var y = bottomWallY + 1; y < top + topOffset + lotHeight; y++) {
-    this.setTile(pathX, y, Tiles.build('road'));
+    // If it is the first road, add the door front ID
+    if (firstRoad) {
+      this.setTile(pathX, y, Tiles.build('road', {'id': doorfrontId}));  
+      firstRoad = false;
+    } else {
+      this.setTile(pathX, y, Tiles.build('road'));  
+    }
     // Chance of perturbing the path
     if (ROT.RNG.getUniform() < 0.2) {
       pathX += (ROT.RNG.getUniformInt(1, 2) == 1 ? -1 : 1);
@@ -175,7 +184,7 @@ Level.Town.prototype._placeBuildings = function() {
       // need to test if we are at the lot right after the church / bar.
        var position = this._getLotPosition(group, i, lotWidth); 
       if (barLocation[0] == group && i == barLocation[1]) {
-        this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight, 'icon-bar', 'bar');
+        this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight, 'icon-bar', 'bar', 'doorfront-bar');
       } else if (barLocation[0] == group && i == barLocation[1] + 1) {
         continue;
       } else if (churchLocation[0] == group && i == churchLocation[1]) {

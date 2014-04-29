@@ -35,13 +35,16 @@ Level.Bar.prototype._setupTiles = function() {
 Level.Bar.prototype._getTemplate = function() {
   return [
     "#################",
-    "#^bbbbbbbbbbbbb^#",
+    "#^BBBBBBBBBBBBB^#",
     "#...............#",
     "#========..=====#",
-    "#ssssssss..sssss#",
+    "#s.s.s.s...s.s.s#",
     "#...............#",
+    "#............T..#",
+    "#..T..T......T..#",
     "#...............#",
-    "#........@......#",
+    "#..T.........T..#",
+    "#^.......@.....^#",
     "#########+#######",
   ];
 };
@@ -52,11 +55,31 @@ Level.Bar.prototype._getTemplate = function() {
  * @return {Tile}        the corresponding tile.
  */
 Level.Bar.prototype._mapTile = function(symbol) {
-  if (symbol == '+') {
-    return Tiles.build('door');
-  } else if (symbol == '@') {
-    return Tiles.build('grass', {'id': 'warp-destination'});
-  } else {
-    return Tiles.build('grass');
+  var map = {
+    '#': 'stone-wall',
+    '^': 'lamp',
+    '=': 'counter',
+    's': 'stool',
+    '.': 'ground',
+    'd': 'left-chair',
+    'T': 'table',
+    'b': 'right-chair'
+  };
+
+  if (map[symbol]) {
+    return Tiles.build(map[symbol]);
   }
+
+  if (symbol == '+') {
+    // Get the warp position from the town
+    var warpPosition = Level.unkey(Levels.town.getTileKeyById('doorfront-bar'));
+    return Tiles.build('door', {
+      'warp': [warpPosition[0], warpPosition[1], 'town']
+    });
+  } else if (symbol == '@') {
+    return Tiles.build('ground', {'id': 'warp-destination'});
+  }
+
+  // for now...
+  return Tiles.build('ground');
 };

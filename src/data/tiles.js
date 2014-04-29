@@ -29,6 +29,18 @@ Tiles.add('weak-torch', {
   'light': [[150, 100, 0], 50]
 });
 
+
+Tiles.add('lamp', {
+  'symbol': 'Y',
+  'color': [255, 153, 0],
+  'light': [[150, 100, 0], 50],
+  'blocksMovement': true,
+  'blockMessage': [
+    'You bump into a lamp.',
+    'You stop yourself before you hit the lamp.'
+  ] 
+});
+
 Tiles.add('stone-wall', {
   'symbol': '#',
   'color': [170, 170, 190],
@@ -81,6 +93,36 @@ Tiles.add('door', {
   'color': [205, 133, 63]
 });
 
+Tiles.add('counter', {
+  'symbol': '≡',
+  'color': [205, 133, 63],
+  'blocksMovement': true,
+  'blockMessage': [
+    "A counter blocks the way.",
+    "Ouch - you hit your hip on the counter.",
+    "It's a wooden counter."
+  ]
+});
+
+Tiles.add('stool', {
+  'symbol': '⌐',
+  'color': [235, 163, 93]
+});
+
+Tiles.add('table', {
+  'symbol': '┬',
+  'color': [205, 133, 63],
+  'blocksMovement': true,
+  'blockMessage': [
+    "It's a table.",
+    "Ouch - you walk right into the table.",
+    "It's a wooden table."
+  ]
+});
+
+
+
+
 Tiles.add('icon', {
   'blocksLight': true,
   'blocksMovement': true,
@@ -109,4 +151,9 @@ Tiles.add('icon-store', {
   'extends': 'icon',
   'symbol': '$',
   'color': [255, 255, 0]
+});
+
+Tiles.add('ground', {
+  'symbol': '.',
+  'color': [200, 200, 200]
 });
