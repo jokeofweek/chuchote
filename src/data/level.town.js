@@ -137,7 +137,7 @@ Level.Town.prototype._placeTorches = function() {
  * @param  {int} lotWidth The width of the lot
  * @return {array}          The x and y coordinate of the top left point of the lot.
  */
-Level.prototype._getLotPosition = function(group, index, lotWidth) {
+Level.Town.prototype._getLotPosition = function(group, index, lotWidth) {
   switch (group) {
     case 0: return [4 + (index * lotWidth), 4];
     case 1: return [Game.MAP_WIDTH / 2 + 1 + (index * lotWidth), 4];
@@ -147,7 +147,7 @@ Level.prototype._getLotPosition = function(group, index, lotWidth) {
   }
 };
 
-Level.prototype._placeBuildings = function() {
+Level.Town.prototype._placeBuildings = function() {
   var lotsWidth = 44;
   var totalLots = 4;
   var lotWidth = lotsWidth / totalLots;
