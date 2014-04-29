@@ -63,7 +63,7 @@ Entity.prototype.warp = function(warp) {
       throw new Error('Level not found: ' + levelName);
     }
     // Get the warp-destination
-    var warpPosition = level.getTileKeyById('warp-destination');
+    var warpPosition = Level.unkey(level.getTileKeyById('warp-destination'));
     if (!warpPosition) {
       throw new Error('No warp destination for level ' + warp);
     }

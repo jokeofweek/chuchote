@@ -28,3 +28,18 @@ Entity.Player.prototype.act = function() {
 Entity.Player.prototype.getMovePromise = function() {
   return this._movePromise;
 };
+
+
+
+/**
+ * @override
+ */
+Entity.Player.prototype.setPosition = function(x, y, level) {
+  var oldLevel = this._level;
+  // Call the parent first
+  Entity.prototype.setPosition.call(this, x, y, level);
+  // If we switched levels, call the switchLevel.
+  if (oldLevel && this._level != oldLevel) {
+    Game.switchLevel(this._level);
+  }
+};

@@ -8,7 +8,7 @@ LoadingScreen.extend(Screen);
  */
 LoadingScreen.prototype._enter = function() {
   this.tasks = [
-    ['Building town...', this._buildTown.bind(this)],
+    ['Creating levels...', this._setupLevels.bind(this)],
     ['Creating characters...', CharManager.createCharacters.bind(CharManager)],
     ['Simulating feelings...', CharManager.setupFeelings.bind(CharManager)]
   ];
@@ -64,7 +64,7 @@ LoadingScreen.prototype.doTask = function() {
   }.bind(this), 200);
 };
 
-LoadingScreen.prototype._buildTown = function() {
-  // Set up the level
-  Levels.town = new Level.Town()
+LoadingScreen.prototype._setupLevels = function() {
+  Levels.town = new Level.Town();
+  Levels.bar = new Level.Bar();
 };

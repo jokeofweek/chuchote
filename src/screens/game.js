@@ -130,7 +130,7 @@ GameScreen.prototype.handleEvent = function(e) {
     var tile = Game.player.getLevel().getTile(newX, newY);
     // If the tile has a warp
     if (tile.getWarp()) {
-      Game.player.warp.apply(Game.player, tile.getWarp());
+      Game.player.warp(tile.getWarp());
     } else if (!tile.blocksMovement()) {
       Game.player.setPosition(newX, newY, Game.player.getLevel());
     } else {
