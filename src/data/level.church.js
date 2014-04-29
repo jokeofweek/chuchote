@@ -12,22 +12,22 @@ Level.Church.extend(Level.Template);
 Level.Church.prototype._getTemplate = function() {
   return [
     "###############",
-    "#.............#",
-    "#.............#",
-    "#.............#",
-    "#.............#",
-    "#.............#",
-    "#.............#",
-    "#.............#",
-    "#.............#",
-    "#.............#",
-    "#.............#",
-    "#.............#",
-    "#.............#",
-    "######...######",
-    "   #.......#   ",
-    "   #.......#   ",
-    "   #...@...#   ",
+    "#.....---.....#",
+    "#.....---.....#",
+    "#.....---.....#",
+    "#{===}---{===}#",
+    "#.....---.....#",
+    "#{===}---{===}#",
+    "#.....---.....#",
+    "#{===}---{===}#",
+    "#.....---.....#",
+    "#{===}---{===}#",
+    "#.....---.....#",
+    "#{===}---{===}#",
+    "######---######",
+    "   #..---..#   ",
+    "   #..---..#   ",
+    "   #..-@-..#   ",
     "   ####+####   ",
   ];
 };
@@ -39,7 +39,11 @@ Level.Church.prototype._mapTile = function(symbol) {
   var map = {
     ' ': 'out-of-bounds',
     '#': 'stone-wall',
-    '.': 'ground'
+    '.': 'ground',
+    '-': 'carpet',
+    '=': 'pew',
+    '{': 'pew-left',
+    '}': 'pew-right'
   };
 
   if (map[symbol]) {
@@ -53,7 +57,7 @@ Level.Church.prototype._mapTile = function(symbol) {
       'warp': [warpPosition[0], warpPosition[1], 'town']
     });
   } else if (symbol == '@') {
-    return Tiles.build('ground', {'id': 'warp-destination'});
+    return Tiles.build('carpet', {'id': 'warp-destination'});
   }
 
   // for now...

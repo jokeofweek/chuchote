@@ -182,3 +182,30 @@ Tiles.add('ground', {
   'symbol': '.',
   'color': [200, 200, 200]
 });
+
+Tiles.add('carpet', {
+  'symbol': '▓',
+  'color': [[180, 0, 0], 10]
+});
+
+
+Tiles.add('pew', {
+  'symbol': '═',
+  'color': [205, 133, 63],
+  'blocksMovement': true,
+  'blockMessage': [
+    "It's a pew.",
+    "Ouch - you walk into a pew.",
+    "The pew is blocking your way."
+  ]
+});
+
+Tiles.add('pew-left', {
+  'extends': 'pew',
+  'symbol': '╘'
+});
+
+Tiles.add('pew-right', {
+  'extends': 'pew',
+  'symbol': '╛'
+});
