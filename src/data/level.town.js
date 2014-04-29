@@ -165,52 +165,85 @@ Level.Town.prototype._getLotPosition = function(group, index, lotWidth) {
   }
 };
 
+/**
+ * Selects a random position for a special building in the list of available positions.
+ * @param  {array} availablePositions An array of [group, slot] values.
+ * @param  {int} width              The width of the building
+ * @return {array}                    The position of the left-most slot to build in.
+ */
+Level.Town.prototype._getRandomPosition = function(availablePositions, width) {
+  var position;
+  while (true) {
+    position = availablePositions.random();
+    // Make sure we can fit the building by ensuring the slots
+    // are all free.
+    if (position[1] + (width - 1) >= 4) continue;
+    for (var i = 2; i <= width; i++) {
+      var found = false;
+      for (var p = 0; p < availablePositions.length; p++) {
+        if (availablePositions[p][0] == position[0] && availablePositions[p][1] == position[1] + (i - 1)) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) continue;
+    }
+    // Found one! 
+    break;
+  }
+  // Remove the used slots from availablePositions
+  for (var i = availablePositions.length - 1; i >= 0; i--) {
+    if (availablePositions[i][0] == position[0] && availablePositions[i][1] >= position[1] &&
+        availablePositions[i][1] < position[1] + width) {
+      availablePositions.splice(i, 1);
+    }
+  }
+  return position;
+};
+
 Level.Town.prototype._placeBuildings = function() {
   var lotsWidth = 44;
   var totalLots = 4;
   var lotWidth = lotsWidth / totalLots;
   var lotHeight = 6;
 
+  // Generate the set of available positions
+  var availablePositions = [];
+  for (var g = 0; g < 4; g++) {
+    for (var i = 0; i < 4; i++) {
+      availablePositions.push([g, i]);
+    }
+  }
+
   // Pick random locations for the bar and the church. The locations are
   // described by [group, index]. Index can not be the last tile as we want
   // to make the bar and the church 2 lots wide. We finally need to pick a
   // store location.
-  var barLocation = [ROT.RNG.getUniformInt(0, 3), ROT.RNG.getUniformInt(0, 2)];
-  var churchLocation;
-  do {
-    churchLocation = [ROT.RNG.getUniformInt(0, 3), ROT.RNG.getUniformInt(0, 2)]
-  } while (churchLocation[0] == barLocation[0]);
-  var storeLocation;
-  do {
-    storeLocation = [ROT.RNG.getUniformInt(0, 3), ROT.RNG.getUniformInt(0, 3)];
-  } while ((storeLocation[0] == barLocation[0] && (storeLocation[1] == barLocation[1] || storeLocation[1] == barLocation[1] + 1)) ||
-      (storeLocation[0] == churchLocation[0] && (storeLocation[1] == churchLocation[1] || storeLocation[1] == churchLocation[1] + 1)));
+  var barLocation = this._getRandomPosition(availablePositions, 2);
+  var churchLocation = this._getRandomPosition(availablePositions, 2);
+  var storeLocation = this._getRandomPosition(availablePositions, 1);
 
-  for (var i = 0; i < totalLots; i++) {
-    for (var group = 0; group < 4; group++) {
-      // Need to test for both bar and church if it is time to render. We also
-      // need to test if we are at the lot right after the church / bar.
-       var position = this._getLotPosition(group, i, lotWidth); 
-      if (barLocation[0] == group && i == barLocation[1]) {
-        this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight, 'icon-bar', {
-          'warp': 'bar', 
-          'doorfrontId': 'doorfront-bar',
-          'centeredDoor': true
-        });
-      } else if (barLocation[0] == group && i == barLocation[1] + 1) {
-        continue;
-      } else if (churchLocation[0] == group && i == churchLocation[1]) {
-        this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight, 'icon-church', {
-          'warp': 'church', 
-          'doorfrontId': 'doorfront-church',
-          'centeredDoor': true
-        });
-      } else if (churchLocation[0] == group && i == churchLocation[1] + 1) {
-        continue;
-      } else {
-        this._generateBuilding(position[0], position[1], lotWidth, lotHeight,
-            (group == storeLocation[0] && i == storeLocation[1]) ? 'icon-store' : 'icon-house');
-      }
-    }
+  // Build the special buildings
+  var position = this._getLotPosition(barLocation[0], barLocation[1], lotWidth);
+  this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight, 'icon-bar', {
+    'warp': 'bar', 
+    'doorfrontId': 'doorfront-bar',
+    'centeredDoor': true
+  });
+
+  position = this._getLotPosition(churchLocation[0], churchLocation[1], lotWidth);
+  this._generateBuilding(position[0], position[1], lotWidth * 2, lotHeight, 'icon-church', {
+    'warp': 'church', 
+    'doorfrontId': 'doorfront-church',
+    'centeredDoor': true
+  });
+
+  position = this._getLotPosition(storeLocation[0], storeLocation[1], lotWidth);
+  this._generateBuilding(position[0], position[1], lotWidth, lotHeight, 'icon-store');
+
+  // Build houses on the remaining locations
+  for (var l = 0; l < availablePositions.length; l++) {
+    position = this._getLotPosition(availablePositions[l][0], availablePositions[l][1], lotWidth);
+    this._generateBuilding(position[0], position[1], lotWidth, lotHeight, 'icon-house');
   }
 };
