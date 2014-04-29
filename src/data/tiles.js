@@ -209,3 +209,25 @@ Tiles.add('pew-right', {
   'extends': 'pew',
   'symbol': '╛'
 });
+
+Tiles.add('water', {
+  'symbol': '≈',
+  'color': [[150, 150, 245], 30]
+});
+
+Tiles.add('statue', {
+  'symbol': 'δ',
+  'color': [153, 50, 204]
+});
+
+Tiles.add('fountain', {
+  'symbol': '#',
+  'blocksMovement': true,
+  'color': [100, 100, 100],
+  'blockMessage': [
+    "You see a fountain with a statue in the center.",
+    "It's a fountain.",
+    "Should have brought a coin to throw in!",
+    "Careful, you don't want to fall into the fountain."
+  ]
+});

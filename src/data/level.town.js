@@ -201,6 +201,47 @@ Level.Town.prototype._getRandomPosition = function(availablePositions, width) {
   return position;
 };
 
+/**
+ * Places a fountain at a given lot
+ * @param  {int} group The lot group.
+ * @param  {int} index The lot index.
+ * @param {int} lotWidth The lot width
+ * @param {int} lotHeight The lot height
+ */
+Level.Town.prototype._placeFountain = function(group, index, lotWidth, lotHeight) {
+  var template = [
+    ".╔═══╗.",
+    "╔╝~~~╚╗",
+    "║~~S~~║",
+    "╚╗~~~╔╝",
+    ".╚═══╝."
+  ];
+
+  // Get the center of the lot.
+  var center = this._getLotPosition(group, index, lotWidth);
+  center[0] += Math.round(lotWidth / 2);
+  center[1] += Math.round(lotHeight / 2);
+
+  var offsetX = center[0] - Math.floor(template[0].length / 2);
+  var offsetY = center[1] - Math.floor(template.length / 2);
+
+  for (var y = 0; y < template.length; y++) {
+    for (var x = 0; x < template[0].length; x++) {
+      var symbol = template[y][x];
+      // Assign corresponding tile depending on symbol
+      if (symbol == '.') { 
+        continue;
+      } else if (symbol == 'S') {
+        this.setTile(offsetX + x, offsetY + y, Tiles.build('statue'));
+      } else if (symbol == '~') {
+        this.setTile(offsetX + x, offsetY + y, Tiles.build('water'));
+      } else {
+        this.setTile(offsetX + x, offsetY + y, Tiles.build('fountain', {'symbol': symbol}));
+      }
+    }
+  }
+};
+
 Level.Town.prototype._placeBuildings = function() {
   var lotsWidth = 44;
   var totalLots = 4;
@@ -222,6 +263,7 @@ Level.Town.prototype._placeBuildings = function() {
   var barLocation = this._getRandomPosition(availablePositions, 2);
   var churchLocation = this._getRandomPosition(availablePositions, 2);
   var storeLocation = this._getRandomPosition(availablePositions, 1);
+  var fountainLocation = this._getRandomPosition(availablePositions, 1);
 
   // Build the special buildings
   var position = this._getLotPosition(barLocation[0], barLocation[1], lotWidth);
@@ -240,6 +282,8 @@ Level.Town.prototype._placeBuildings = function() {
 
   position = this._getLotPosition(storeLocation[0], storeLocation[1], lotWidth);
   this._generateBuilding(position[0], position[1], lotWidth, lotHeight, 'icon-store');
+
+  this._placeFountain(fountainLocation[0], fountainLocation[1], lotWidth, lotHeight);
 
   // Build houses on the remaining locations
   for (var l = 0; l < availablePositions.length; l++) {
