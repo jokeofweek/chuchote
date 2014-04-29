@@ -120,7 +120,32 @@ Tiles.add('table', {
   ]
 });
 
+Tiles.add('bottles-left', {
+  'symbol': '╚',
+  'blocksMovement': true,
+  'color': [255, 255, 255],
+  'blockMessage': "It's the end of a shelf."
+});
 
+Tiles.add('bottles-right', {
+  'symbol': '╝',
+  'blocksMovement': true,
+  'color': [255, 255, 255],
+  'blockMessage': "It's the end of a shelf."
+});
+
+Tiles.add('bottles', {
+  'symbol': ['═', '╧', '╩'],
+  'blocksMovement': true,
+  'color': [255, 255, 255],
+  'blockMessage': function() {
+    if (this.getSymbol() == '═') {
+      return "It's an empty shelf.";
+    } else {
+      return "It's a shelf with an assortment of glass bottles.";
+    }
+  }
+});
 
 
 Tiles.add('icon', {

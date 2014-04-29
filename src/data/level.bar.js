@@ -12,7 +12,7 @@ Level.Bar.extend(Level.Template);
 Level.Bar.prototype._getTemplate = function() {
   return [
     "#################",
-    "#^BBBBBBBBBBBBB^#",
+    "#^LBBBBBBBBBBBR^#",
     "#...............#",
     "#========..=====#",
     "#s.s.s.s...s.s.s#",
@@ -38,7 +38,10 @@ Level.Bar.prototype._mapTile = function(symbol) {
     '.': 'ground',
     'd': 'left-chair',
     'T': 'table',
-    'b': 'right-chair'
+    'b': 'right-chair',
+    'L': 'bottles-left',
+    'R': 'bottles-right',
+    'B': 'bottles'
   };
 
   if (map[symbol]) {
